@@ -1,0 +1,14 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Boxy Theme",
+		"GoSublime",
+		"HTML5",
+		"Material Theme",
+		"Package Control"
+	]
+}

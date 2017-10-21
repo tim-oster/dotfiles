@@ -1,0 +1,12 @@
+{
+	"9o.hist./home/shiva/go/src/github.com/obsilp/hexapong":
+	[
+		"run",
+		"go get gopkg.in/olahol/melody.v1",
+		"go get github.com/gin-gonic/gin",
+		"go run"
+	],
+	"ann": "a17.03.05-1",
+	"install_version": "r17.03.05-1",
+	"version": "r17.03.05-1"
+}
