@@ -1,5 +1,0 @@
-// These settings override both User and Default settings for the Plain text syntax
-{
-	"theme": "Material-Theme-Darker.sublime-theme",
-    "color_scheme": "Packages/Material Theme/schemes/Material-Theme-Darker.tmTheme"
-}
