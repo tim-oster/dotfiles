@@ -36,7 +36,7 @@ bindsym $mod+Return exec terminator
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+#bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -163,49 +163,56 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-workspace_auto_back_and_forth yes
-
+# special windows
 for_window [class="^Google-chrome$"] border none
-
 for_window [class="^jetbrains-idea$"] border normal
 for_window [class="^jetbrains-idea$" title="^Debug -"] border none
 
-for_window [title="^Buddy List" class="^Pidgin$"] floating enable
-for_window [class="^copyq$"] floating enable
+# window placement
+for_window [title="Discord"] move to workspace $ws3
+for_window [title="TeamSpeak"] move to workspace $ws3
+for_window [class="Spotify"] move to workspace $ws2
 
-for_window [class="Qalculate-gtk"] floating enable
-
-for_window [class="tw-com-aten-ikvm-KVMMain"] floating enable
-assign [class="tw-com-aten-ikvm-KVMMain"] 1
-
-for_window [class="Remmina"] floating enable
-
-for_window [title="CSSH"] floating enable
-
-# Jump to Chrome
-bindsym $mod+c [class="^Google-chrome$" instance="google-chrome"] focus
-
-# Chrome window mappings
-bindsym $mod+udiaeresis [instance="^crx_foobar"] focus
+set $bg #282828
+set $red #cc241d
+set $green #98971a
+set $yellow #d79921
+set $purple #b16286
+set $gray #a89984
+set $darkgray #1d2021
+set $white #ffffff
+set $text #ebdbb2
 
 bar {
-        position bottom
-        status_command i3status
-        colors {
-      background #002b36
-      statusline #839496
-      separator  #586e75
-      focused_workspace  #b58900 #b58900 #002b36
-      active_workspace   #586e75 #586e75 #002b36
-      inactive_workspace #073642 #002b36 #839496
-      urgent_workspace   #dc322f #dc322f #fdf6e3
-        }
+    position bottom
+    status_command i3blocks -c ~/.config/i3/i3blocks.conf
+    tray_output HDMI-1
+    colors {
+        background $bg
+        statusline $yellow
+        focused_workspace    $text $text $darkgray
+        inactive_workspace   $darkgray $darkgray $text
+        active_workspace     $darkgray $darkgray $text
+        urgent_workspace     $red $red $bg
+    }
 }
 
+client.focused          $gray $gray $darkgray $purple $darkgray
+client.focused_inactive $darkgray $darkgray $text $purple $darkgray
+client.unfocused        $darkgray $darkgray $text $purple $darkgray
+client.urgent           $red $red $white $red $red
 
-client.focused          #002b36 #586e75 #fdf6e3 #268bd2
-client.focused_inactive #002b36 #073642 #839496 #073642
-client.unfocused        #002b36 #073642 #839496 #073642
-client.urgent           #002b36 #dc322f #fdf6e3 #002b36
+exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg
 
-exec vmware-user
+bindsym $mod+shift+x exec ~/.config/i3/lock.sh
+
+# rofi
+bindsym $mod+D exec rofi -show run
+
+# screen layout
+exec ~/.config/i3/screen_layout.sh
+
+# auto startup
+exec nm-applet &
+exec slack -u &
+exec ~/.config/i3/wacom_conf.sh
