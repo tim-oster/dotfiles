@@ -1,4 +1,13 @@
-export PATH=$PATH:$HOME/.apps:$HOME/.apps/jetbrains
+export PATH=$PATH:$HOME/.apps:$HOME/.apps/jetbrains:$HOME/.linkerd2/bin
 
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
+
+export PATH=$PATH:$HOME/flutter/bin:$HOME/dart-sdk/bin
+
+if ! pgrep -u $USER -f "gpg-agent.*enable-ssh-support" > /dev/null
+then
+    pkill gpg-agent
+    gpg-agent --homedir $HOME/.gnupg --daemon --enable-ssh-support
+fi
+SSH_AUTH_SOCK=$(gpgconf --list-dir agent-ssh-socket)
