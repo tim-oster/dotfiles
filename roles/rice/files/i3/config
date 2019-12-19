@@ -206,6 +206,9 @@ client.urgent           $red $red $white $red $red
 # source: https://apps.fedoraproject.org/nuancier/results/
 exec_always feh --bg-scale ~/.config/i3/wallpapers/photo_2019-12-19_17-55-37.jpg
 
+# listener for laptop close event
+exec_always xss-lock -- ~/.config/i3/lock.sh
+
 bindsym $mod+shift+x exec ~/.config/i3/lock.sh
 
 # rofi
