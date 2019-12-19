@@ -1,0 +1,12 @@
+---
+- local_action: stat path=~/.apps/jetbrains-toolbox
+  register: jetbrains
+  become: no
+
+- name: Download jetbrains toolbox
+  shell: |
+    cd /tmp
+    wget -O jetbrains.tar.gz https://download.jetbrains.com/toolbox/jetbrains-toolbox-1.16.6207.tar.gz
+    tar -xzf jetbrains.tar.gz
+    mv jetbrains-toolbox*/jetbrains-toolbox ~/.apps/
+  when: jetbrains.stat.exists == False

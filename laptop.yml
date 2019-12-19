@@ -4,18 +4,22 @@
 
   vars:
     is_laptop: true
+    net_ifaces:
+    - { iface: 'enp0s25', name: 'ETH' }
+    - { iface: 'wlp3s0', name: 'WLN' }
 
   roles:
-  - common
-  - i3
-  - i3blocks
-  - terminal
-  - apps
-  - chrome
-  - cleanup
+#  - common
+#  - i3
+#  - i3blocks
+#  - terminal
+#  - apps
+#  - chrome
+#  - cleanup
   - rice
+#  - jetbrains
+#  - dev
 
-# TODO go, jetbrains toolbox
-# TODO store thunderbird config?
-# TODO i3blocks laptop config / in general good laptop configs
+# TODO lock on laptop close
 # TODO all bitburst stuff
+# TODO write readme

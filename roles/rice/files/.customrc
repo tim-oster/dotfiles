@@ -1,5 +1,5 @@
 # alternative bin locations
-export PATH=$PATH:$HOME/.apps:$HOME/.apps/jetbrains
+export PATH=$PATH:$HOME/.apps
 
 # golang setup
 export GOPATH=$HOME/go

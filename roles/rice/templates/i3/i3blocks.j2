@@ -5,11 +5,25 @@ markup=none
 separator=false
 
 
+{% if is_laptop %}
+[battery]
+label= 
+interval=5
+markup=pango
+
+[spacer]
+full_text=
+color=#b16286
+{% endif %}
+
+
+{% for item in net_ifaces %}
 [iface]
-instance=enp8s0
+instance={{item.iface}}
 interval=5
 color=#fabd2f
-label= ETH 
+label= {{item.name}} 
+{% endfor %}
 
 
 [spacer]
