@@ -1,0 +1,21 @@
+---
+- name: Laptop setup
+  hosts: localhost
+
+  vars:
+    is_laptop: true
+
+  roles:
+  - common
+  - i3
+  - i3blocks
+  - terminal
+  - apps
+  - chrome
+  - cleanup
+  - rice
+
+# TODO go, jetbrains toolbox
+# TODO store thunderbird config?
+# TODO i3blocks laptop config / in general good laptop configs
+# TODO all bitburst stuff

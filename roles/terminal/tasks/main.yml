@@ -1,0 +1,8 @@
+---
+- local_action: stat path=~/.oh-my-zsh/
+  register: zsh
+  become: no
+
+- name: Check terminal installation
+  include: install.yml
+  when: zsh.stat.exists == False

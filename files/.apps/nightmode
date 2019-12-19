@@ -1,8 +1,0 @@
-#!/bin/bash
-
-redshift -x &>-
-redshift -o -r -b 0.8 &>-
-redshift -r -O 4500 &>-
-redshift -r -O 4500 &>-
-redshift -r -O 4500 &>-
-redshift -r -O 4500 &>-

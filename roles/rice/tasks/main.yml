@@ -1,0 +1,37 @@
+---
+- name: Apply customrc source
+  copy:
+    src: "{{item}}"
+    dest: ~/
+  with_items:
+    - ../files/.bashrc
+    - ../files/.profile
+    - ../files/.zshrc
+    - ../files/.customrc
+
+- name: Apply custom configs
+  copy:
+    src: "{{item}}"
+    dest: ~/
+  with_items:
+    - ../files/.gitconfig
+    - ../files/.Xresources
+
+- name: Apply terminal rice
+  copy:
+    src: ../files/terminator
+    dest: ~/.config
+
+- name: Apply i3 rice
+  copy:
+    src: ../files/i3
+    dest: ~/.config
+    mode: preserve
+
+- name: Apply i3 templates
+  template:
+    src: ../templates/{{item.path}}.j2
+    dest: ~/.config/{{item.path}}.{{item.ext}}
+  with_items:
+    - { path: 'i3/screen_layout', ext: 'sh' }
+    - { path: 'i3/i3blocks', ext: 'conf' }
