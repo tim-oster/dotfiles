@@ -9,15 +9,13 @@
     - { iface: 'wlp3s0', name: 'WLN' }
 
   roles:
-#  - common
-#  - i3
-#  - i3blocks
-#  - terminal
-#  - apps
-#  - chrome
-#  - cleanup
+  - common
+  - i3
+  - i3blocks
+  - terminal
+  - apps
+  - chrome
+  - cleanup
   - rice
-#  - jetbrains
-#  - dev
-
-# TODO all bitburst stuff
+  - jetbrains
+  - dev
