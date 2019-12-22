@@ -19,6 +19,8 @@
     - arandr
     - redshift
     - pavucontrol
+    - podman
+    - toolbox
 
 - name: Activate auto updates
   become: yes
