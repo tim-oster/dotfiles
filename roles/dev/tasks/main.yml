@@ -8,7 +8,7 @@
   become: yes
   dnf:
     name:
-    - redis-cli
+    - redis
     - protobuf-compiler
 
 - name: Install golang packages
