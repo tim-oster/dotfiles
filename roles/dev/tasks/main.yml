@@ -3,3 +3,14 @@
   become: yes
   dnf:
     name: golang
+
+- name: Install command line tools
+  become: yes
+  dnf:
+    name:
+    - redis-cli
+    - protobuf-compiler
+
+- name: Install golang packages
+  become: no
+  shell: go get github.com/golang/protobuf/protoc-gen-go
