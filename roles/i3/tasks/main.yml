@@ -18,4 +18,3 @@
     - lm_sensors        # read pc sensor information
     - fontawesome-fonts # add icon font
     - acpi              # read battery levels
-    - xss-lock          # listener for laptop events
