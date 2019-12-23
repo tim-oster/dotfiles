@@ -14,3 +14,19 @@
 - name: Install golang packages
   become: no
   shell: go get github.com/golang/protobuf/protoc-gen-go
+
+- name: Add k8s repo
+  become: yes
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+- name: Install kubectl
+  become: yes
+  dnf:
+    name: kubectl
