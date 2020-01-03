@@ -8,3 +8,4 @@ flatpak_apps:
   - { pkg: 'org.libreoffice.LibreOffice', name: 'libreoffice' }
   - { pkg: 'com.getpostman.Postman', name: 'postman' }
   - { pkg: 'org.mozilla.Thunderbird', name: 'thunderbird' }
+  - { pkg: 'org.gimp.GIMP', name: 'gimp' }
