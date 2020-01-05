@@ -30,3 +30,14 @@
   become: yes
   dnf:
     name: kubectl
+
+- name: Add bazel repo
+  become: yes
+  command:
+    cmd: "dnf copr enable -y vbatts/bazel"
+    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:vbatts:bazel.repo
+
+- name: Install bazel
+  become: yes
+  dnf:
+    name: bazel
