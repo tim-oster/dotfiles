@@ -9,3 +9,4 @@ flatpak_apps:
   - { pkg: 'com.getpostman.Postman', name: 'postman' }
   - { pkg: 'org.mozilla.Thunderbird', name: 'thunderbird' }
   - { pkg: 'org.gimp.GIMP', name: 'gimp' }
+  - { pkg: 'com.microsoft.Teams', name: 'teams' }
