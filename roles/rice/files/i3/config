@@ -29,6 +29,9 @@ font pango:monospace 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# make everything tabbed
+workspace_layout tabbed
+
 # start a terminal
 bindsym $mod+Return exec terminator
 
@@ -167,12 +170,11 @@ bindsym $mod+r mode "resize"
 for_window [class="^Google-chrome$"] border none
 for_window [class="^jetbrains-idea$"] border normal
 for_window [class="^jetbrains-idea$" title="^Debug -"] border none
-for_window [title="Commit Changes"] floating disable move to workspace $ws1
+for_window [title="Commit Changes"] floating disable
+for_window [class="jetbrains-goland" title="^Merge Revisions"] floating disable
 
 # window placement
-for_window [title="Discord"] move to workspace $ws2
-for_window [title="TeamSpeak"] move to workspace $ws2
-for_window [class="Spotify"] move to workspace $ws3
+for_window [title="Virtual MIDI Piano Keyboard"] move to workspace $ws10
 
 set $bg #282828
 set $red #cc241d
@@ -187,7 +189,7 @@ set $text #ebdbb2
 bar {
     position bottom
     status_command i3blocks -c ~/.config/i3/i3blocks.conf
-    tray_output HDMI-1
+#   tray_output DP-3
     colors {
         background $bg
         statusline $yellow
@@ -204,7 +206,7 @@ client.unfocused        $darkgray $darkgray $text $purple $darkgray
 client.urgent           $red $red $white $red $red
 
 # source: https://apps.fedoraproject.org/nuancier/results/
-exec_always feh --bg-scale ~/.config/i3/wallpapers/photo_2019-12-19_17-55-37.jpg
+exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg
 
 bindsym $mod+shift+x exec ~/.config/i3/lock.sh
 
@@ -216,5 +218,5 @@ exec ~/.config/i3/screen_layout.sh
 
 # auto startup
 exec nm-applet &
-exec slack -u &
 exec ~/.config/i3/wacom_conf.sh
+exec vmpk &

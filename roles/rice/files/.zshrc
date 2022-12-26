@@ -2,12 +2,12 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/timoster/.oh-my-zsh"
+export ZSH="/home/timos/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
@@ -106,17 +106,4 @@ function kubectl() {
     fi
 
     command kubectl "$@"
-}
-
-prompt_virtualenv() {
-  if [[ -n $VIRTUAL_ENV ]]; then
-    color=cyan
-    prompt_segment $color $PRIMARY_FG
-    print -Pn " $(basename $VIRTUAL_ENV) "
-  fi
-  if [[ -n $TOOLBOX_NAME ]]; then
-    color=blue
-    prompt_segment $color $PRIMARY_FG
-    print -Pn " $TOOLBOX_NAME "
-  fi
 }

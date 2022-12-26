@@ -1,9 +1,9 @@
-# alternative bin locations
-export PATH=$PATH:$HOME/.apps
+export PATH=$PATH:$HOME/.apps:$HOME/.apps/jetbrains
 
-# golang setup
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+export PATH=$GOPATH/bin:$HOME/go/go1.19.4/bin:$PATH
+
+export PATH=$PATH:$HOME/.local/bin
 
 # run ssh agent
 if ! pgrep -u $USER -f "gpg-agent.*enable-ssh-support" > /dev/null
@@ -13,3 +13,8 @@ then
 fi
 SSH_AUTH_SOCK=$(gpgconf --list-dir agent-ssh-socket)
 export SSH_AUTH_SOCK
+
+# aliases
+alias gnb='git checkout -b'
+alias gpb='git push -u origin $(git branch --show-current)'
+alias gcbm='PREV=$(git branch --show-current) && git checkout master && git pull && git branch -d $PREV'

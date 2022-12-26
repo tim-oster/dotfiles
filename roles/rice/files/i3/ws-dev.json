@@ -1,0 +1,98 @@
+{
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splith",
+    "percent": 1,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "tabbed",
+            "percent": 0.22,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                        "height": 381,
+                        "width": 574,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "name": "Google Chrome",
+                    "percent": 0.22,
+                    "swallows": [
+                        {
+                            "instance": "^google-chrome"
+                        }
+                    ],
+                    "type": "con"
+                }
+            ]
+        },
+        {
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "tabbed",
+            "percent": 0.56,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                        "height": 1031,
+                        "width": 1910,
+                        "x": 1920,
+                        "y": 0
+                    },
+                    "name": "IDE",
+                    "percent": 0.56,
+                    "swallows": [
+                        {
+                            "instance": "jetbrains-goland",
+                            "title": "^(?!win0)"
+                        },
+                        {
+                            "instance": "jetbrains-clion",
+                            "title": "^(?!win0)"
+                        }
+                    ],
+                    "type": "con"
+                }
+            ]
+        },
+        {
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "tabbed",
+            "percent": 0.22,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                        "height": 381,
+                        "width": 574,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "name": "Terminal",
+                    "percent": 0.5,
+                    "swallows": [
+                        {
+                            "instance": "^terminator$"
+                        }
+                    ],
+                    "type": "con"
+                }
+            ]
+        }
+    ]
+}
