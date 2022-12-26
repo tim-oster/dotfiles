@@ -6,7 +6,7 @@
 - name: Download jetbrains toolbox
   shell: |
     cd /tmp
-    wget -O jetbrains.tar.gz https://download.jetbrains.com/toolbox/jetbrains-toolbox-1.16.6207.tar.gz
+    wget -O jetbrains.tar.gz https://download-cdn.jetbrains.com/toolbox/jetbrains-toolbox-1.27.2.13801.tar.gz
     tar -xzf jetbrains.tar.gz
     mv jetbrains-toolbox*/jetbrains-toolbox ~/.apps/
   when: jetbrains.stat.exists == False

@@ -1,0 +1,20 @@
+---
+- name: Laptop setup
+  hosts: localhost
+
+  vars:
+    is_laptop: false
+    net_ifaces:
+    - { iface: 'ens160', name: 'ETH' }
+
+  roles:
+  - common
+  - i3
+  - i3blocks
+  - terminal
+  - apps
+  - chrome
+  - cleanup
+  - rice
+  - jetbrains
+  - dev

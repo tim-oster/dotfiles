@@ -7,9 +7,6 @@
     - autoconf
     - automake
     - nano
-    - git-lfs
-    - git-crypt
-    - dnf-automatic
 
 - name: Install utilities
   become: yes
@@ -19,9 +16,3 @@
     - arandr
     - redshift
     - pavucontrol
-
-- name: Activate auto updates
-  become: yes
-  service:
-    name: dnf-automatic.timer
-    enabled: yes

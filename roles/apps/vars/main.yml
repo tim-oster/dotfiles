@@ -1,12 +1,8 @@
 ---
 flatpak_apps:
-  - { pkg: 'com.discordapp.Discord', name: 'discord' }
   - { pkg: 'com.spotify.Client', name: 'spotify' }
-  - { pkg: 'org.telegram.desktop', name: 'telegram' }
   - { pkg: 'com.slack.Slack', name: 'slack' }
   - { pkg: 'com.visualstudio.code', name: 'vsc' }
   - { pkg: 'org.libreoffice.LibreOffice', name: 'libreoffice' }
   - { pkg: 'com.getpostman.Postman', name: 'postman' }
-  - { pkg: 'org.mozilla.Thunderbird', name: 'thunderbird' }
   - { pkg: 'org.gimp.GIMP', name: 'gimp' }
-  - { pkg: 'com.microsoft.Teams', name: 'teams' }
