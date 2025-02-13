@@ -7,10 +7,9 @@
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
-    helix
-    kitty
     google-chrome
-    wget
+    obsidian
+    i3lock-fancy-rapid
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -37,6 +36,41 @@
   services.gnome-keyring.enable = true;
   services.ssh-agent.enable = true;
 
+  stylix.enable = true;
+  stylix.cursor.size = 10;
+  # stylix.cursor.package = pkgs.bibata-cursors;
+  # stylix.cursor.name = "Bibata-Modern-Ice";
+  stylix.fonts.sizes = let size = 10; in {
+    applications = size;
+    desktop = size;
+    popups = size;
+    terminal = size;
+  };
+
+  stylix.fonts = {
+    monospace = {
+      package = pkgs.nerd-fonts.jetbrains-mono;
+      name = "JetBrainsMono Nerd Font Mono";
+    };
+    sansSerif = {
+      package = pkgs.dejavu_fonts;
+      name = "DejaVu Sans";
+    };
+    serif = {
+      package = pkgs.dejavu_fonts;
+      name = "DejaVu Serif";
+    };
+  };
+
+  programs.neovim.enable = true;
+  programs.helix.enable = true;
+  programs.alacritty.enable = true;
+
+  programs.btop = {
+    enable = true;
+    settings.vim_keys = true;
+  };
+
   xsession.windowManager.i3 = {
     enable = true;
     package = pkgs.i3-gaps;
@@ -44,13 +78,22 @@
       modifier = "Mod4";
 
       startup = [
-        { command = "${lib.getExe pkgs._1password-gui} --silent"; always = false; notification = false; }
+        { command = "i3-msg workspace 1"; always = false; notification = false; }
+        { command = "${lib.getExe pkgs._1password-gui} --silent"; always = false; notification = true; }
       ];
 
       keybindings = let modifier = config.xsession.windowManager.i3.config.modifier; in lib.mkOptionDefault {
-        "${modifier}+Return" = "exec kitty";
+        "${modifier}+Return" = "exec ${lib.getExe pkgs.alacritty}";
+        "${modifier}+d" = "exec ${lib.getExe pkgs.rofi} -show run";
+        "${modifier}+Shift+x" = "exec ${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
       };
     };
+  };
+
+  programs.rofi.enable = true;
+
+  programs.fzf = {
+    enable = true;
   };
 
   programs.fish = {
@@ -59,6 +102,11 @@
       set fish_greeting # Disable greeting
     '';
   };
+
+  programs.bat.enable = true;
+
+  home.shell.enableShellIntegration = true;
+  programs.direnv.enable = true;
 
   programs.git = {
     enable = true;
@@ -70,6 +118,11 @@
       commit.gpgsign = true;
       # 1password item: GitHub Workstation
       user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H";
+    };
+
+    delta = {
+      enable = true;
+      options.side-by-side = true;
     };
   };
 

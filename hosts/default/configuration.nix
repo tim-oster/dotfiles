@@ -1,9 +1,10 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 {
   imports =
     [
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.default
+      inputs.stylix.nixosModules.stylix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -33,9 +34,23 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
+  stylix = let
+    theme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+  in
+  {
+    enable = true;
+    polarity = "dark";
+    base16Scheme = theme;
+    image = pkgs.runCommand "image.png" {} ''
+      COLOR=$(${lib.getExe pkgs.yq} -r .palette.base00 ${theme})
+      ${lib.getExe pkgs.imagemagick} -size 10x10 xc:$COLOR $out
+    '';
+    imageScalingMode = "tile";
+  };
+
   services.xserver.enable = true;
   services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.i3.extraPackages = with pkgs; [ dmenu i3status i3lock ];
+  services.xserver.windowManager.i3.extraPackages = with pkgs; [ i3status ];
   services.xserver.xkb.layout = "de";
 
   services.xserver.displayManager.lightdm.enable = true;
@@ -61,16 +76,16 @@
       password-border-width = 0
       password-border-radius = 0
 
-      background-color = #282828
-      text-color = #ebdbb2
-      error-color = #fb4934
-      window-color = #504945
-      border-color = #504945
+      background-color = #${config.lib.stylix.colors.base00}
+      text-color = #${config.lib.stylix.colors.base06}
+      error-color = #${config.lib.stylix.colors.base08}
+      window-color = #${config.lib.stylix.colors.base02}
+      border-color = #${config.lib.stylix.colors.base02}
       border-width = 0px
 
-      password-color = #ebdbb2
-      password-background-color = #665c54
-      password-border-color = #665c54
+      password-color = #${config.lib.stylix.colors.base06}
+      password-background-color = #${config.lib.stylix.colors.base03}
+      password-border-color = #${config.lib.stylix.colors.base03}
     '';
   };
   services.xserver.displayManager.lightdm.extraSeatDefaults = ''
