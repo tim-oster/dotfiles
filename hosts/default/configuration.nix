@@ -142,6 +142,7 @@
 
   environment.systemPackages = with pkgs; [
     neovim
+    libnotify
   ];
 
   system.stateVersion = "24.11";
