@@ -1,8 +1,0 @@
----
-- local_action: stat path=/usr/local/bin/i3blocks
-  register: i3blocks
-  become: no
-
-- name: Check i3blocks installation
-  include: install.yml
-  when: i3blocks.stat.exists == False
