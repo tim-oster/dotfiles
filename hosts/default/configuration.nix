@@ -50,7 +50,7 @@
 
   services.xserver.enable = true;
   services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.i3.extraPackages = with pkgs; [ i3status ];
+  services.xserver.windowManager.i3.extraPackages = with pkgs; [ ];
   services.xserver.xkb.layout = "de";
 
   services.xserver.displayManager.lightdm.enable = true;
@@ -97,6 +97,9 @@
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.login.enableGnomeKeyring = true;
+
+  # needed for redshift
+  services.geoclue2.enable = true;
 
   # Configure console keymap
   console.keyMap = "de";

@@ -10,9 +10,15 @@
     google-chrome
     obsidian
     i3lock-fancy-rapid
+    pavucontrol
+    neofetch
 
+    (pkgs.writeShellScriptBin "redshift-on" "redshift -P -O 3000")
+    (pkgs.writeShellScriptBin "redshift-off" "redshift -x")
     (pkgs.writeShellScriptBin "wifimenu" ''
       #!/usr/bin/env bash
+      
+      # modified version of: https://github.com/ericmurphyxyz/rofi-wifi-menu
 
       notify-send "Getting list of available Wi-Fi networks..."
       # Get a list of available wifi connections and morph it into a nice-looking list
@@ -95,8 +101,13 @@
 
   services.dunst.enable = true;
 
+  services.redshift = {
+    enable = true;
+    provider = "geoclue2";
+  };
+
   stylix.enable = true;
-  stylix.cursor.size = 10;
+  stylix.cursor.size = 8;
   stylix.fonts.sizes = let size = 10; in {
     applications = size;
     desktop = size;
@@ -134,16 +145,84 @@
     config = {
       modifier = "Mod4";
 
+      bars = [
+        (config.lib.stylix.i3.bar // {
+          position = "bottom";
+          statusCommand = "${lib.getExe pkgs.i3status-rust} config-default.toml";
+        })
+      ];
+
       startup = [
         { command = "i3-msg workspace 1"; always = false; notification = false; }
         { command = "${lib.getExe pkgs._1password-gui} --silent"; always = false; notification = true; }
       ];
-
+       
       keybindings = let modifier = config.xsession.windowManager.i3.config.modifier; in lib.mkOptionDefault {
         "${modifier}+Return" = "exec ${lib.getExe pkgs.alacritty}";
         "${modifier}+d" = "exec ${lib.getExe pkgs.rofi} -show run";
         "${modifier}+Shift+x" = "exec ${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
       };
+    };
+  };
+
+  programs.i3status-rust = {
+    enable = true;
+    bars.default = {
+      settings = {
+        theme.overrides = config.lib.stylix.i3status-rust.bar;
+      };
+      blocks = [
+        {
+          block = "cpu";
+        }
+        {
+          block = "load";
+          format = " $icon $1m.eng(w:4) ";
+        }
+        {
+          block = "memory";
+          format = " $icon $mem_total_used.eng(w:3) / $mem_total ";
+          format_alt = " $icon_swap $swap_used_percents.eng(w:2) ";
+        }
+        {
+          block = "temperature";
+        }
+        {
+          block = "disk_space";
+          alert = 10.0;
+          format = " $icon $available.eng(w:2) ";
+          info_type = "available";
+          interval = 20;
+          path = "/";
+          warning = 20.0;
+        }
+        {
+          block = "nvidia_gpu";
+        }
+        {
+          block = "net";
+          device = "enp14s0";
+          format = " ^icon_net_wired $ip ";
+          format_alt = " ^icon_net_wired $ipv6 ";
+        }
+        {
+          block = "net";
+          device = "wlp15s0";
+          format = " ^icon_net_wireless $ip - $ssid ";
+          format_alt = " ^icon_net_wireless $ipv6 ";
+        }
+        {
+          block = "sound";
+          click = [
+            { button = "left"; cmd = "pavucontrol"; }
+          ];
+        }
+        {
+          block = "time";
+          format = " $timestamp.datetime(f:'%a %F %T %Z')";
+          interval = 5;
+        }
+      ];
     };
   };
 
