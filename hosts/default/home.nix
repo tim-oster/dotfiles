@@ -12,6 +12,8 @@
     i3lock-fancy-rapid
     pavucontrol
     neofetch
+    dust # better du
+    duf # better df
 
     (pkgs.writeShellScriptBin "redshift-on" "redshift -P -O 3000")
     (pkgs.writeShellScriptBin "redshift-off" "redshift -x")
@@ -77,23 +79,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
-  # envvars available in home manager managed shells
-  home.sessionVariables = {
-  };
-
   programs.home-manager.enable = true;
   
   services.gnome-keyring.enable = true;
@@ -131,7 +116,17 @@
   };
 
   programs.neovim.enable = true;
-  programs.helix.enable = true;
+  programs.helix = {
+    enable = true;
+    defaultEditor = true;
+    ignores = [ ".git/" ];
+    settings = {
+      editor = {
+        line-number = "relative";
+        lsp.display-messages = true;
+      };
+    };
+  };
   programs.alacritty.enable = true;
 
   programs.btop = {
@@ -239,10 +234,21 @@
     '';
   };
 
+  # better cat
   programs.bat.enable = true;
+  # better ls
+  programs.lsd.enable = true;
+  # better find
+  programs.fd = { enable = true; ignores = [".git/"]; };
+  # TUI file explorer
+  programs.yazi.enable = true;
 
   home.shell.enableShellIntegration = true;
   programs.direnv.enable = true;
+
+  programs.starship = {
+    enable = true;
+  };
 
   programs.git = {
     enable = true;
