@@ -9,7 +9,6 @@
   home.packages = with pkgs; [
     google-chrome
     obsidian
-    i3lock-fancy-rapid
     pavucontrol
     neofetch
     dust # better du
@@ -206,6 +205,15 @@
         { command = "${lib.getExe pkgs._1password-gui} --silent"; always = false; notification = true; }
         { command = "blueman-applet"; always = false; notification = true; } # installed in configuration.nix
       ];
+
+      modes.resize = let inc = 5; in {
+        Up = "resize shrink height ${toString inc} px or ${toString inc} ppt";
+        Down = "resize grow height ${toString inc} px or ${toString inc} ppt";
+        Left = "resize shrink width ${toString inc} px or ${toString inc} ppt";
+        Right = "resize grow width ${toString inc} px or ${toString inc} ppt";
+        Escape = "mode default";
+        Return = "mode default";
+      };
        
       keybindings = let modifier = config.xsession.windowManager.i3.config.modifier; in lib.mkOptionDefault {
         "${modifier}+Return" = "exec ${lib.getExe pkgs.alacritty}";
@@ -299,8 +307,12 @@
   programs.yazi.enable = true;
 
   home.shell.enableShellIntegration = true;
-  programs.direnv.enable = true;
-
+  programs.direnv = {
+    enable = true;
+    silent = true;
+    nix-direnv.enable = true;
+  };
+  
   programs.starship = {
     enable = true;
   };
