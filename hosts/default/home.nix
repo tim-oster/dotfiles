@@ -120,10 +120,64 @@
     enable = true;
     defaultEditor = true;
     ignores = [ ".git/" ];
+    languages = {
+      language-server.nil = {
+        command = (lib.getExe pkgs.nil);
+      };
+      language-server.gopls = {
+        command = (lib.getExe pkgs.gopls);
+      };
+      language-server.golangci-lint-lsp = {
+        command = (lib.getExe pkgs.golangci-lint-langserver);
+        config.command = [
+          (lib.getExe pkgs.golangci-lint)
+          "run"
+          "--out-format"
+          "json"
+          "--issues-exit-code=1"
+        ];
+      };
+    
+      language = [
+        {
+          name = "nix";
+          language-servers = [ "nil" ];
+          formatter = { command = (lib.getExe pkgs.nixfmt-rfc-style); };
+          indent = { tab-width = 2; unit = " "; };
+        }
+        {
+          name = "go";
+          language-servers = [ "gopls" "golangci-lint-lsp" ];
+          auto-format = true;
+          formatter = { command = (lib.getExe pkgs.gofumpt); };
+          indent = { tab-width = 4; unit = "\t"; };
+          debugger = {
+            name = "go";
+            transport = "tcp";
+            command = (lib.getExe pkgs.delve);
+            args = [ "dap" ];
+            port-arg = "-l 127.0.0.1:{}";
+          };
+        }
+      ];
+    };
     settings = {
       editor = {
         line-number = "relative";
+        cursorline = true;
+        insert-final-newline = true;
+
+        cursor-shape.insert = "bar";
+
+        indent-guides = {
+          render = true;
+          skip-levels = 1;
+        };
+        
         lsp.display-messages = true;
+
+        end-of-line-diagnostics = "hint";
+        inline-diagnostics.cursor-line = "warning";
       };
     };
   };
