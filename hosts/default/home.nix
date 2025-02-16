@@ -150,6 +150,7 @@
       startup = [
         { command = "i3-msg workspace 1"; always = false; notification = false; }
         { command = "${lib.getExe pkgs._1password-gui} --silent"; always = false; notification = true; }
+        { command = "blueman-applet"; always = false; notification = true; } # installed in configuration.nix
       ];
        
       keybindings = let modifier = config.xsession.windowManager.i3.config.modifier; in lib.mkOptionDefault {

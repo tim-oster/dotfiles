@@ -50,7 +50,7 @@
 
   services.xserver.enable = true;
   services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.i3.extraPackages = with pkgs; [ ];
+  services.xserver.windowManager.i3.extraPackages = [ ];
   services.xserver.xkb.layout = "de";
 
   services.xserver.displayManager.lightdm.enable = true;
@@ -153,6 +153,11 @@
   # enable nvidia for wayland (although called xserver) and enable opengl
   services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics.enable = true;
+
+  # enable bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   # load open-source nvidia drivers
   hardware.nvidia = {
