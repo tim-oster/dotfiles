@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.programs.redshift;
+  cfg = config.custom.redshift;
 in
 {
   imports = [ ];
 
-  options.programs.redshift = {
+  options.custom.redshift = {
     enable = lib.mkEnableOption "redshift bindings";
     geo-provider = lib.mkOption {
       type = lib.types.str;

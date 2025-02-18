@@ -9,12 +9,12 @@
 {
   imports = builtins.attrValues outputs.homeManagerModules ++ [ ];
 
-  programs.redshift = {
+  custom.redshift = {
     enable = true;
     geo-provider = "geoclue2";
     night-temp = "3000";
   };
-  programs.wifimenu.enable = true;
+  custom.wifimenu.enable = true;
 
   home.username = "tim";
   home.homeDirectory = "/home/tim";

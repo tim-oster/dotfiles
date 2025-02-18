@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.programs.wifimenu;
+  cfg = config.custom.wifimenu;
 in
 {
   imports = [ ];
 
-  options.programs.wifimenu = {
+  options.custom.wifimenu = {
     enable = lib.mkEnableOption "wifimenu rofi script";
   };
 
