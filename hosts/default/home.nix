@@ -44,34 +44,9 @@
 
   services.dunst.enable = true;
 
-  stylix.enable = true;
-  stylix.cursor.size = 8;
-  stylix.fonts.sizes =
-    let
-      size = 10;
-    in
-    {
-      applications = size;
-      desktop = size;
-      popups = size;
-      terminal = size;
-    };
-
-  stylix.fonts = {
-    monospace = {
-      package = pkgs.nerd-fonts.jetbrains-mono;
-      name = "JetBrainsMono Nerd Font Mono";
-    };
-    sansSerif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Sans";
-    };
-    serif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Serif";
-    };
   };
 
+  # apply stylix to neovim as well
   programs.neovim.enable = true;
   programs.alacritty.enable = true;
 
@@ -245,6 +220,7 @@
   };
 
   programs.git = {
+  custom.stylix.enable = true;
     enable = true;
     userName = "tim-oster";
     userEmail = "tim.oster99@gmail.com";
