@@ -18,8 +18,6 @@ in
     home.packages = lib.mkMerge [
       [
         (pkgs.writeShellScriptBin "wifimenu" ''
-             #!/usr/bin/env bash
-             
              # modified version of: https://github.com/ericmurphyxyz/rofi-wifi-menu
 
              notify-send "Getting list of available Wi-Fi networks..."

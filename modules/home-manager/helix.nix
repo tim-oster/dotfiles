@@ -40,6 +40,7 @@ in
             "--issues-exit-code=1"
           ];
         };
+        language-server.vscode-json-language-server.command = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
 
         language = [
           {

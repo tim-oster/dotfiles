@@ -31,6 +31,26 @@ in
     home.packages = lib.mkMerge [
       [
         pkgs.delve # go debugger
+
+        (pkgs.writeShellScriptBin "ws-dev" ''
+          ALLOWED_FOLDERS=("dev")
+          DIR=''\$(fd --full-path $HOME --max-depth=1 --type directory ''\${ALLOWED_FOLDERS[@]} | rofi -dmenu -p "Select workspace: ")
+          
+          if [[ ''\$DIR -eq "" ]]; then
+            exit
+          fi
+          
+          i3-msg "append_layout ${./ws-dev.json}"
+
+          google-chrome-stable &
+          alacritty --working-directory "''\$HOME/''\$DIR" --command "hx" &
+          sleep 0.1
+          alacritty --working-directory "''\$HOME/''\$DIR" --command "lazygit" &
+          sleep 0.1
+          alacritty --working-directory "''\$HOME/''\$DIR" &
+          sleep 0.1
+          alacritty &
+        '')
       ]
     ];
   };
