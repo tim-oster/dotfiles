@@ -1,13 +1,21 @@
-{ config, pkgs, inputs, lib, ... }:
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-      inputs.stylix.nixosModules.stylix
-    ];
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.default
+    inputs.stylix.nixosModules.stylix
+  ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -34,19 +42,20 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  stylix = let
-    theme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-  in
-  {
-    enable = true;
-    polarity = "dark";
-    base16Scheme = theme;
-    image = pkgs.runCommand "image.png" {} ''
-      COLOR=$(${lib.getExe pkgs.yq} -r .palette.base00 ${theme})
-      ${lib.getExe pkgs.imagemagick} -size 10x10 xc:$COLOR $out
-    '';
-    imageScalingMode = "tile";
-  };
+  stylix =
+    let
+      theme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+    in
+    {
+      enable = true;
+      polarity = "dark";
+      base16Scheme = theme;
+      image = pkgs.runCommand "image.png" { } ''
+        COLOR=$(${lib.getExe pkgs.yq} -r .palette.base00 ${theme})
+        ${lib.getExe pkgs.imagemagick} -size 10x10 xc:$COLOR $out
+      '';
+      imageScalingMode = "tile";
+    };
 
   services.xserver.enable = true;
   services.xserver.windowManager.i3.enable = true;
@@ -92,7 +101,10 @@
     user-session = none+i3
   '';
   services.xserver.resolutions = [
-    { x = 5120; y = 1440; }
+    {
+      x = 5120;
+      y = 1440;
+    }
   ];
 
   services.gnome.gnome-keyring.enable = true;
@@ -120,7 +132,10 @@
   users.users.tim = {
     isNormalUser = true;
     description = "tim";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     shell = pkgs.fish;
   };
 
@@ -151,7 +166,7 @@
   system.stateVersion = "24.11";
 
   # enable nvidia for wayland (although called xserver) and enable opengl
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics.enable = true;
 
   # enable bluetooth

@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home.username = "tim";
@@ -17,69 +22,69 @@
     (pkgs.writeShellScriptBin "redshift-on" "redshift -P -O 3000")
     (pkgs.writeShellScriptBin "redshift-off" "redshift -x")
     (pkgs.writeShellScriptBin "wifimenu" ''
-      #!/usr/bin/env bash
-      
-      # modified version of: https://github.com/ericmurphyxyz/rofi-wifi-menu
+         #!/usr/bin/env bash
+         
+         # modified version of: https://github.com/ericmurphyxyz/rofi-wifi-menu
 
-      notify-send "Getting list of available Wi-Fi networks..."
-      # Get a list of available wifi connections and morph it into a nice-looking list
-      wifi_list=''\$(nmcli -t --fields "SECURITY,SSID" device wifi list | sed 's/  */ /g' | sed -E "s/WPA*.?\S/ /g" | sed "s/^--/ /g" | sed "s/ //g" | sed "/--/d" | sed "s/no//" | sed "s/yes/✔/" | sort)
+         notify-send "Getting list of available Wi-Fi networks..."
+         # Get a list of available wifi connections and morph it into a nice-looking list
+         wifi_list=''\$(nmcli -t --fields "SECURITY,SSID" device wifi list | sed 's/  */ /g' | sed -E "s/WPA*.?\S/ /g" | sed "s/^--/ /g" | sed "s/ //g" | sed "/--/d" | sed "s/no//" | sed "s/yes/✔/" | sort)
 
-      connected=''\$(nmcli -fields WIFI g)
-      if [[ "''\$connected" =~ "enabled" ]]; then
-      	toggle="󰖪  Disable Wi-Fi"
-      elif [[ "''\$connected" =~ "disabled" ]]; then
-      	toggle="󰖩  Enable Wi-Fi"
-      fi
+         connected=''\$(nmcli -fields WIFI g)
+         if [[ "''\$connected" =~ "enabled" ]]; then
+         	toggle="󰖪  Disable Wi-Fi"
+         elif [[ "''\$connected" =~ "disabled" ]]; then
+         	toggle="󰖩  Enable Wi-Fi"
+         fi
 
-      # Use rofi to select wifi network
-      chosen_network=''\$(echo -e "''\$toggle\n''\$wifi_list" | uniq --skip-chars=5 | rofi -dmenu -i -selected-row 1 -p "Wi-Fi SSID: " )
-      # Get name of connection
-      read -r chosen_id <<< "''\${chosen_network:2}"
+         # Use rofi to select wifi network
+         chosen_network=''\$(echo -e "''\$toggle\n''\$wifi_list" | uniq --skip-chars=5 | rofi -dmenu -i -selected-row 1 -p "Wi-Fi SSID: " )
+         # Get name of connection
+         read -r chosen_id <<< "''\${chosen_network:2}"
 
-      if [ "''\$chosen_network" = "" ]; then
-      	exit
-      elif [ "''\$chosen_network" = "󰖩  Enable Wi-Fi" ]; then
-      	nmcli radio wifi on
-      elif [ "''\$chosen_network" = "󰖪  Disable Wi-Fi" ]; then
-      	nmcli radio wifi off
-      else
-        # disconnect if connected
-        if [[ $(nmcli -t --fields "ACTIVE,SSID" device wifi list | grep "^yes" | grep ":''\$chosen_id\''\$" | wc -l) -gt 0 ]]; then
-          nmcli connection down id "''\$chosen_id"
-          notify-send "Connection Closed" "Disconnected from "''\$chosen_id"."
-          exit
-        fi
-      
-      	# Message to show when connection is activated successfully
-        success_message="You are now connected to the Wi-Fi network \"''\$chosen_id\"."
+         if [ "''\$chosen_network" = "" ]; then
+         	exit
+         elif [ "''\$chosen_network" = "󰖩  Enable Wi-Fi" ]; then
+         	nmcli radio wifi on
+         elif [ "''\$chosen_network" = "󰖪  Disable Wi-Fi" ]; then
+         	nmcli radio wifi off
+         else
+           # disconnect if connected
+           if [[ $(nmcli -t --fields "ACTIVE,SSID" device wifi list | grep "^yes" | grep ":''\$chosen_id\''\$" | wc -l) -gt 0 ]]; then
+             nmcli connection down id "''\$chosen_id"
+             notify-send "Connection Closed" "Disconnected from "''\$chosen_id"."
+             exit
+           fi
+         
+         	# Message to show when connection is activated successfully
+           success_message="You are now connected to the Wi-Fi network \"''\$chosen_id\"."
 
-      	# Get saved connections
-      	saved_connections=''\$(nmcli -g NAME connection)
-      	if [[ ''\$(echo "''\$saved_connections" | grep -w "''\$chosen_id") = "''\$chosen_id" ]]; then
-      		if nmcli connection up id "''\$chosen_id" | grep "successfully"; then
-            notify-send "Connection Established" "''\$success_message"
-            exit
-          fi
-        fi
+         	# Get saved connections
+         	saved_connections=''\$(nmcli -g NAME connection)
+         	if [[ ''\$(echo "''\$saved_connections" | grep -w "''\$chosen_id") = "''\$chosen_id" ]]; then
+         		if nmcli connection up id "''\$chosen_id" | grep "successfully"; then
+               notify-send "Connection Established" "''\$success_message"
+               exit
+             fi
+           fi
 
-    		if [[ "''\$chosen_network" =~ "" ]]; then
-    			wifi_password=''\$(rofi -dmenu -p "Password: " )
-    		fi
+       		if [[ "''\$chosen_network" =~ "" ]]; then
+       			wifi_password=''\$(rofi -dmenu -p "Password: " )
+       		fi
 
-   		  if nmcli device wifi connect "''\$chosen_id" password "''\$wifi_password" ; then
-          notify-send "Connection Established" "''\$success_message"
-        else
-          notify-send "Connection Failed" "Invalid password"
-        fi
-      fi
+      		  if nmcli device wifi connect "''\$chosen_id" password "''\$wifi_password" ; then
+             notify-send "Connection Established" "''\$success_message"
+           else
+             notify-send "Connection Failed" "Invalid password"
+           fi
+         fi
     '')
   ];
 
   nixpkgs.config.allowUnfree = true;
 
   programs.home-manager.enable = true;
-  
+
   services.gnome-keyring.enable = true;
   services.ssh-agent.enable = true;
 
@@ -92,12 +97,16 @@
 
   stylix.enable = true;
   stylix.cursor.size = 8;
-  stylix.fonts.sizes = let size = 10; in {
-    applications = size;
-    desktop = size;
-    popups = size;
-    terminal = size;
-  };
+  stylix.fonts.sizes =
+    let
+      size = 10;
+    in
+    {
+      applications = size;
+      desktop = size;
+      popups = size;
+      terminal = size;
+    };
 
   stylix.fonts = {
     monospace = {
@@ -136,26 +145,13 @@
           "--issues-exit-code=1"
         ];
       };
-    
+
       language = [
         {
           name = "nix";
           language-servers = [ "nil" ];
-          formatter = { command = (lib.getExe pkgs.nixfmt-rfc-style); };
-          indent = { tab-width = 2; unit = " "; };
-        }
-        {
-          name = "go";
-          language-servers = [ "gopls" "golangci-lint-lsp" ];
-          auto-format = true;
-          formatter = { command = (lib.getExe pkgs.gofumpt); };
-          indent = { tab-width = 4; unit = "\t"; };
-          debugger = {
-            name = "go";
-            transport = "tcp";
-            command = (lib.getExe pkgs.delve);
-            args = [ "dap" ];
-            port-arg = "-l 127.0.0.1:{}";
+          formatter = {
+            command = (lib.getExe pkgs.nixfmt-rfc-style);
           };
         }
       ];
@@ -172,7 +168,7 @@
           render = true;
           skip-levels = 1;
         };
-        
+
         lsp.display-messages = true;
 
         end-of-line-diagnostics = "hint";
@@ -194,32 +190,60 @@
       modifier = "Mod4";
 
       bars = [
-        (config.lib.stylix.i3.bar // {
-          position = "bottom";
-          statusCommand = "${lib.getExe pkgs.i3status-rust} config-default.toml";
-        })
+        (
+          config.lib.stylix.i3.bar
+          // {
+            position = "bottom";
+            statusCommand = "${lib.getExe pkgs.i3status-rust} config-default.toml";
+          }
+        )
       ];
 
       startup = [
-        { command = "i3-msg workspace 1"; always = false; notification = false; }
-        { command = "${lib.getExe pkgs._1password-gui} --silent"; always = false; notification = true; }
-        { command = "blueman-applet"; always = false; notification = true; } # installed in configuration.nix
+        {
+          command = "i3-msg workspace 1";
+          always = false;
+          notification = false;
+        }
+        {
+          command = "${lib.getExe pkgs._1password-gui} --silent";
+          always = false;
+          notification = false;
+        }
+        {
+          command = "${lib.getExe pkgs.networkmanagerapplet}";
+          always = false;
+          notification = false;
+        }
+        {
+          command = "blueman-applet";
+          always = false;
+          notification = false;
+        } # installed in configuration.nix
       ];
 
-      modes.resize = let inc = 5; in {
-        Up = "resize shrink height ${toString inc} px or ${toString inc} ppt";
-        Down = "resize grow height ${toString inc} px or ${toString inc} ppt";
-        Left = "resize shrink width ${toString inc} px or ${toString inc} ppt";
-        Right = "resize grow width ${toString inc} px or ${toString inc} ppt";
-        Escape = "mode default";
-        Return = "mode default";
-      };
-       
-      keybindings = let modifier = config.xsession.windowManager.i3.config.modifier; in lib.mkOptionDefault {
-        "${modifier}+Return" = "exec ${lib.getExe pkgs.alacritty}";
-        "${modifier}+d" = "exec ${lib.getExe pkgs.rofi} -show run";
-        "${modifier}+Shift+x" = "exec ${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
-      };
+      modes.resize =
+        let
+          inc = 5;
+        in
+        {
+          Up = "resize shrink height ${toString inc} px or ${toString inc} ppt";
+          Down = "resize grow height ${toString inc} px or ${toString inc} ppt";
+          Left = "resize shrink width ${toString inc} px or ${toString inc} ppt";
+          Right = "resize grow width ${toString inc} px or ${toString inc} ppt";
+          Escape = "mode default";
+          Return = "mode default";
+        };
+
+      keybindings =
+        let
+          modifier = config.xsession.windowManager.i3.config.modifier;
+        in
+        lib.mkOptionDefault {
+          "${modifier}+Return" = "exec ${lib.getExe pkgs.alacritty}";
+          "${modifier}+d" = "exec ${lib.getExe pkgs.rofi} -show run";
+          "${modifier}+Shift+x" = "exec ${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
+        };
     };
   };
 
@@ -272,7 +296,10 @@
         {
           block = "sound";
           click = [
-            { button = "left"; cmd = "pavucontrol"; }
+            {
+              button = "left";
+              cmd = "pavucontrol";
+            }
           ];
         }
         {
@@ -302,7 +329,10 @@
   # better ls
   programs.lsd.enable = true;
   # better find
-  programs.fd = { enable = true; ignores = [".git/"]; };
+  programs.fd = {
+    enable = true;
+    ignores = [ ".git/" ];
+  };
   # TUI file explorer
   programs.yazi.enable = true;
 
@@ -312,7 +342,7 @@
     silent = true;
     nix-direnv.enable = true;
   };
-  
+
   programs.starship = {
     enable = true;
   };
