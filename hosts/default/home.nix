@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   outputs,
@@ -8,6 +7,33 @@
 
 {
   imports = builtins.attrValues outputs.homeManagerModules ++ [ ];
+
+  nixpkgs.config.allowUnfree = true;
+
+  programs.home-manager.enable = true;
+
+  home = {
+    username = "tim";
+    homeDirectory = "/home/tim";
+    stateVersion = "24.11";
+
+    packages = with pkgs; [
+      google-chrome
+      obsidian
+      pavucontrol
+      neofetch
+    ];
+  };
+
+  # apply stylix to neovim as well
+  programs.neovim.enable = true;
+  services.dunst.enable = true;
+
+  programs.git = {
+    enable = true;
+    userName = "tim-oster";
+    userEmail = "tim.oster99@gmail.com";
+  };
 
   custom.redshift = {
     enable = true;
@@ -19,231 +45,21 @@
     enable = true;
     defaultEditor = true;
   };
-
-  home.username = "tim";
-  home.homeDirectory = "/home/tim";
-
-  home.stateVersion = "24.11";
-
-  home.packages = with pkgs; [
-    google-chrome
-    obsidian
-    pavucontrol
-    neofetch
-    dust # better du
-    duf # better df
-    delve # go debugger
-  ];
-
-  nixpkgs.config.allowUnfree = true;
-
-  programs.home-manager.enable = true;
-
-  services.gnome-keyring.enable = true;
-  services.ssh-agent.enable = true;
-
-  services.dunst.enable = true;
-
-  };
-
-  # apply stylix to neovim as well
-  programs.neovim.enable = true;
-  programs.alacritty.enable = true;
-
-  programs.btop = {
-    enable = true;
-    settings.vim_keys = true;
-  };
-
-  xsession.windowManager.i3 = {
-    enable = true;
-    package = pkgs.i3-gaps;
-    config = {
-      modifier = "Mod4";
-
-      bars = [
-        (
-          config.lib.stylix.i3.bar
-          // {
-            position = "bottom";
-            statusCommand = "${lib.getExe pkgs.i3status-rust} config-default.toml";
-          }
-        )
-      ];
-
-      startup = [
-        {
-          command = "i3-msg workspace 1";
-          always = false;
-          notification = false;
-        }
-        {
-          command = "${lib.getExe pkgs._1password-gui} --silent";
-          always = false;
-          notification = false;
-        }
-        {
-          command = "${lib.getExe pkgs.networkmanagerapplet}";
-          always = false;
-          notification = false;
-        }
-        {
-          command = "blueman-applet";
-          always = false;
-          notification = false;
-        } # installed in configuration.nix
-      ];
-
-      modes.resize =
-        let
-          inc = 5;
-        in
-        {
-          Up = "resize shrink height ${toString inc} px or ${toString inc} ppt";
-          Down = "resize grow height ${toString inc} px or ${toString inc} ppt";
-          Left = "resize shrink width ${toString inc} px or ${toString inc} ppt";
-          Right = "resize grow width ${toString inc} px or ${toString inc} ppt";
-          Escape = "mode default";
-          Return = "mode default";
-        };
-
-      keybindings =
-        let
-          modifier = config.xsession.windowManager.i3.config.modifier;
-        in
-        lib.mkOptionDefault {
-          "${modifier}+Return" = "exec ${lib.getExe pkgs.alacritty}";
-          "${modifier}+d" = "exec ${lib.getExe pkgs.rofi} -show run";
-          "${modifier}+Shift+x" = "exec ${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
-        };
-    };
-  };
-
-  programs.i3status-rust = {
-    enable = true;
-    bars.default = {
-      settings = {
-        theme.overrides = config.lib.stylix.i3status-rust.bar;
-      };
-      blocks = [
-        {
-          block = "cpu";
-        }
-        {
-          block = "load";
-          format = " $icon $1m.eng(w:4) ";
-        }
-        {
-          block = "memory";
-          format = " $icon $mem_total_used.eng(w:3) / $mem_total ";
-          format_alt = " $icon_swap $swap_used_percents.eng(w:2) ";
-        }
-        {
-          block = "temperature";
-        }
-        {
-          block = "disk_space";
-          alert = 10.0;
-          format = " $icon $available.eng(w:2) ";
-          info_type = "available";
-          interval = 20;
-          path = "/";
-          warning = 20.0;
-        }
-        {
-          block = "nvidia_gpu";
-        }
-        {
-          block = "net";
-          device = "enp14s0";
-          format = " ^icon_net_wired $ip ";
-          format_alt = " ^icon_net_wired $ipv6 ";
-        }
-        {
-          block = "net";
-          device = "wlp15s0";
-          format = " ^icon_net_wireless $ip - $ssid ";
-          format_alt = " ^icon_net_wireless $ipv6 ";
-        }
-        {
-          block = "sound";
-          click = [
-            {
-              button = "left";
-              cmd = "pavucontrol";
-            }
-          ];
-        }
-        {
-          block = "time";
-          format = " $timestamp.datetime(f:'%a %F %T %Z')";
-          interval = 5;
-        }
-      ];
-    };
-  };
-
-  programs.rofi.enable = true;
-
-  programs.fzf = {
-    enable = true;
-  };
-
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      set fish_greeting # Disable greeting
-    '';
-  };
-
-  # better cat
-  programs.bat.enable = true;
-  # better ls
-  programs.lsd.enable = true;
-  # better find
-  programs.fd = {
-    enable = true;
-    ignores = [ ".git/" ];
-  };
-  # TUI file explorer
-  programs.yazi.enable = true;
-
-  home.shell.enableShellIntegration = true;
-  programs.direnv = {
-    enable = true;
-    silent = true;
-    nix-direnv.enable = true;
-  };
-
-  programs.starship = {
-    enable = true;
-  };
-
-  programs.git = {
   custom.stylix.enable = true;
+  custom.i3 = {
     enable = true;
-    userName = "tim-oster";
-    userEmail = "tim.oster99@gmail.com";
-    extraConfig = {
-      gpg.format = "ssh";
-      "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-      commit.gpgsign = true;
-      # 1password item: GitHub Workstation
-      user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H";
-    };
-
-    delta = {
-      enable = true;
-      options.side-by-side = true;
-    };
+    startup = [
+      "${lib.getExe pkgs._1password-gui} --silent"
+      "${lib.getExe pkgs.networkmanagerapplet}"
+      "blueman-applet" # installed in configuration.nix
+    ];
+    terminal = pkgs.alacritty;
   };
-  programs.lazygit.enable = true;
-
-  programs.ssh = {
+  custom.terminal.enable = true;
+  custom.devenv.enable = true;
+  custom._1password = {
     enable = true;
-    extraConfig = ''
-      Host *
-        IdentityAgent ~/.1password/agent.sock
-    '';
+    # 1password item: GitHub Workstation
+    gpgSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H";
   };
 }
