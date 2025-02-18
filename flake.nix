@@ -13,8 +13,11 @@
   };
 
   outputs =
-    { nixpkgs, ... }@inputs:
-    rec {
+    { self, nixpkgs, ... }@inputs:
+    let
+      inherit (self) outputs;
+    in
+    {
 
       legacyPackages = nixpkgs.lib.genAttrs [ "x86_64-linux" ] (
         system:
@@ -24,9 +27,12 @@
         }
       );
 
+      nixosModules = import ./modules/nixos;
+      homeManagerModules = import ./modules/home-manager;
+
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        pkgs = legacyPackages.x86_64-linux;
-        specialArgs = { inherit inputs; };
+        pkgs = outputs.legacyPackages.x86_64-linux;
+        specialArgs = { inherit inputs outputs; };
         modules = [
           ./hosts/default/configuration.nix
         ];

@@ -2,10 +2,21 @@
   config,
   pkgs,
   lib,
+  outputs,
   ...
 }:
 
 {
+  imports = [
+    outputs.homeManagerModules.redshift
+  ];
+
+  programs.redshift = {
+    enable = true;
+    geo-provider = "geoclue2";
+    night-temp = "3000";
+  };
+
   home.username = "tim";
   home.homeDirectory = "/home/tim";
 
@@ -20,8 +31,6 @@
     duf # better df
     delve # go debugger
 
-    (pkgs.writeShellScriptBin "redshift-on" "redshift -P -O 3000")
-    (pkgs.writeShellScriptBin "redshift-off" "redshift -x")
     (pkgs.writeShellScriptBin "wifimenu" ''
          #!/usr/bin/env bash
          
@@ -90,11 +99,6 @@
   services.ssh-agent.enable = true;
 
   services.dunst.enable = true;
-
-  services.redshift = {
-    enable = true;
-    provider = "geoclue2";
-  };
 
   stylix.enable = true;
   stylix.cursor.size = 8;

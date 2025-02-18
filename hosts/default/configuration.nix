@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  outputs,
   lib,
   ...
 }:
@@ -147,7 +148,7 @@
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { inherit inputs outputs; };
     users = {
       "tim" = import ./home.nix;
     };
