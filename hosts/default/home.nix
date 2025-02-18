@@ -11,8 +11,8 @@
 
   custom.redshift = {
     enable = true;
-    geo-provider = "geoclue2";
-    night-temp = "3000";
+    geoProvider = "geoclue2";
+    nightTemp = 3000;
   };
   custom.wifimenu.enable = true;
   custom.helix = {
