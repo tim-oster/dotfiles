@@ -18,6 +18,7 @@
     neofetch
     dust # better du
     duf # better df
+    delve # go debugger
 
     (pkgs.writeShellScriptBin "redshift-on" "redshift -P -O 3000")
     (pkgs.writeShellScriptBin "redshift-off" "redshift -x")
