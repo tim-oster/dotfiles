@@ -141,5 +141,6 @@ in
     };
 
     programs.rofi.enable = true;
+    services.dunst.enable = true;
   };
 }
