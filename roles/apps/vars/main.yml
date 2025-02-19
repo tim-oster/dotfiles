@@ -1,8 +1,0 @@
----
-flatpak_apps:
-  - { pkg: 'com.spotify.Client', name: 'spotify' }
-  - { pkg: 'com.slack.Slack', name: 'slack' }
-  - { pkg: 'com.visualstudio.code', name: 'vsc' }
-  - { pkg: 'org.libreoffice.LibreOffice', name: 'libreoffice' }
-  - { pkg: 'com.getpostman.Postman', name: 'postman' }
-  - { pkg: 'org.gimp.GIMP', name: 'gimp' }

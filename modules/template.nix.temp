@@ -1,0 +1,19 @@
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  cfg = config.custom.TODO;
+in
+{
+  imports = [ ];
+
+  options.custom.TODO = {
+    enable = lib.mkEnableOption "TODO";
+  };
+
+  config = lib.mkIf cfg.enable {
+  };
+}

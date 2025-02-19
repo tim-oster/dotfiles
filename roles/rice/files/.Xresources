@@ -1,7 +1,0 @@
-rofi.color-enabled: true
-!                  bg       font     --       --       selected
-rofi.color-normal: #282828, #f3f4f5, #282828, #282828, #d79921
-rofi.color-urgent: #282828, #f3f4f5, #282828, #282828, #d79921
-rofi.color-active: #282828, #f3f4f5, #282828, #282828, #d79921
-rofi.color-window: #282828, #4b4f5c
-rofi.separator-style: solid

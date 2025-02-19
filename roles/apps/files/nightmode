@@ -1,8 +1,0 @@
-#!/bin/bash
-
-redshift -x &>/dev/null
-redshift -o -r -b 0.8 &>/dev/null
-redshift -r -O 4500 &>/dev/null
-redshift -r -O 4500 &>/dev/null
-redshift -r -O 4500 &>/dev/null
-redshift -r -O 4500 &>/dev/null
