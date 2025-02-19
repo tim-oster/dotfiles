@@ -3,7 +3,6 @@
   pkgs,
   inputs,
   outputs,
-  lib,
   ...
 }:
 {
@@ -20,7 +19,7 @@
 
   system.stateVersion = "24.11";
 
-  networking.hostName = "nixos";
+  networking.hostName = "nixos-workstation";
   networking.networkmanager.enable = true;
 
   boot.loader.systemd-boot.enable = true;
@@ -60,6 +59,7 @@
     systemPackages = with pkgs; [
       neovim
       libnotify
+      just
     ];
   };
 
