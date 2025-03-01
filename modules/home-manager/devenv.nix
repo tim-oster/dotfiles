@@ -26,7 +26,12 @@ in
       options.side-by-side = true;
     };
 
-    programs.lazygit.enable = true;
+    programs.lazygit = {
+      enable = true;
+      settings = {
+        git.autoFetch = false;
+      };
+    };
 
     home.packages = lib.mkMerge [
       [
@@ -35,11 +40,11 @@ in
         (pkgs.writeShellScriptBin "ws-dev" ''
           ALLOWED_FOLDERS=("dev")
           DIR=''\$(fd --full-path $HOME --max-depth=1 --type directory ''\${ALLOWED_FOLDERS[@]} | rofi -dmenu -p "Select workspace: ")
-          
+
           if [[ ''\$DIR -eq "" ]]; then
             exit
           fi
-          
+
           i3-msg "append_layout ${./ws-dev.json}"
 
           google-chrome-stable &
