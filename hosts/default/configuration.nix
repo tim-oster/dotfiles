@@ -78,6 +78,11 @@
     theme = "gruvbox-dark-medium";
   };
 
+  custom.oryx = {
+    enable = true;
+    groupMembers = [ "tim" ];
+  };
+
   services = {
     gnome.gnome-keyring.enable = true;
     geoclue2.enable = true;
