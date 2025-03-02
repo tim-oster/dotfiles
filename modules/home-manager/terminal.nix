@@ -30,14 +30,23 @@ in
 
     # better cat
     programs.bat.enable = true;
+    home.shellAliases.cat = "bat";
 
     # better ls
     programs.lsd.enable = true;
+    home.shellAliases = {
+      "ls" = "lsd";
+      "ll" = "lsd -alh";
+      "tree" = "lsd --tree";
+    };
 
     # better find
-    programs.fd = {
-      enable = true;
-      ignores = [ ".git/" ];
+    programs = {
+      fd = {
+        enable = true;
+        ignores = [ ".git/" ];
+      };
+      ripgrep.enable = true;
     };
 
     # TUI file explorer
