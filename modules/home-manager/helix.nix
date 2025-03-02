@@ -23,24 +23,28 @@ in
       enable = true;
       defaultEditor = cfg.defaultEditor;
       ignores = [ ".git/" ];
+
+      # default configs: https://github.com/helix-editor/helix/blob/master/languages.toml
       languages = {
-        language-server.nil = {
-          command = (lib.getExe pkgs.nil);
+        language-server = {
+          nil.command = (lib.getExe pkgs.nil);
+          gopls.command = (lib.getExe pkgs.gopls);
+          golangci-lint-lsp = {
+            command = (lib.getExe pkgs.golangci-lint-langserver);
+            config.command = [
+              (lib.getExe pkgs.golangci-lint)
+              "run"
+              "--out-format"
+              "json"
+              "--issues-exit-code=1"
+            ];
+          };
+          vscode-css-language-server.command = "${pkgs.vscode-langservers-extracted}/bin/vscode-css-language-server";
+          vscode-html-language-server.command = "${pkgs.vscode-langservers-extracted}/bin/vscode-html-language-server";
+          vscode-json-language-server.command = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
+          typescript-language-server.command = (lib.getExe pkgs.typescript-language-server);
+          yaml-language-server.command = (lib.getExe pkgs.yaml-language-server);
         };
-        language-server.gopls = {
-          command = (lib.getExe pkgs.gopls);
-        };
-        language-server.golangci-lint-lsp = {
-          command = (lib.getExe pkgs.golangci-lint-langserver);
-          config.command = [
-            (lib.getExe pkgs.golangci-lint)
-            "run"
-            "--out-format"
-            "json"
-            "--issues-exit-code=1"
-          ];
-        };
-        language-server.vscode-json-language-server.command = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
 
         language = [
           {
@@ -49,6 +53,70 @@ in
             auto-format = true;
             formatter = {
               command = (lib.getExe pkgs.nixfmt-rfc-style);
+            };
+          }
+          {
+            name = "yaml";
+            language-servers = [ "yaml-language-server" ];
+            auto-format = true;
+            formatter = {
+              command = (lib.getExe pkgs.yamlfmt);
+              args = [ "-" ];
+            };
+          }
+          {
+            name = "html";
+            auto-format = false;
+            formatter = {
+              command = (lib.getExe pkgs.nodePackages.prettier);
+              args = [
+                "--parser"
+                "html"
+              ];
+            };
+          }
+          {
+            name = "json";
+            auto-format = false;
+            formatter = {
+              command = (lib.getExe pkgs.nodePackages.prettier);
+              args = [
+                "--parser"
+                "json"
+              ];
+            };
+          }
+          {
+            name = "css";
+            auto-format = true;
+            formatter = {
+              command = (lib.getExe pkgs.nodePackages.prettier);
+              args = [
+                "--parser"
+                "css"
+              ];
+            };
+          }
+          {
+            name = "javascript";
+            auto-format = true;
+            formatter = {
+              command = (lib.getExe pkgs.nodePackages.prettier);
+              args = [
+                "--parser"
+                "typescript"
+              ];
+            };
+          }
+          {
+            name = "typescript";
+            auto-format = true;
+            formatter = {
+              command = (lib.getExe pkgs.nodePackages.prettier);
+              args = [
+                "--parser"
+                "typescript"
+              ];
             };
           }
         ];
