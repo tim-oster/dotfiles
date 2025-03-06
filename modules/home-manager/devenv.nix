@@ -33,6 +33,8 @@ in
       };
     };
 
+    services.podman.enable = true;
+
     home.packages = lib.mkMerge [
       [
         pkgs.delve # go debugger
@@ -48,9 +50,9 @@ in
           i3-msg "append_layout ${./ws-dev.json}"
 
           google-chrome-stable &
-          alacritty --working-directory "''\$HOME/''\$DIR" --command ''\$SHELL -c "direnv export \$SHELL | source && hx" &
-          sleep 0.1
           alacritty --working-directory "''\$HOME/''\$DIR" --command ''\$SHELL -c "direnv export \$SHELL | source && lazygit" &
+          sleep 0.1
+          alacritty --working-directory "''\$HOME/''\$DIR" --command ''\$SHELL -c "direnv export \$SHELL | source && hx" &
           sleep 0.1
           alacritty --working-directory "''\$HOME/''\$DIR" &
           sleep 0.1

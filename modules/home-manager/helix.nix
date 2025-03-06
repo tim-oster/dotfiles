@@ -22,7 +22,13 @@ in
     programs.helix = {
       enable = true;
       defaultEditor = cfg.defaultEditor;
-      ignores = [ ".git/" ];
+      ignores = [
+        ".git/"
+        ".direnv/"
+        ".venv/"
+        ".cache/"
+        ".aider.*/*"
+      ];
 
       # default configs: https://github.com/helix-editor/helix/blob/master/languages.toml
       languages = {
@@ -128,6 +134,15 @@ in
           insert-final-newline = true;
 
           cursor-shape.insert = "bar";
+
+          file-picker = {
+            hidden = false;
+            parents = false;
+            ignore = false;
+            git-ignore = false;
+            git-global = false;
+            git-exclude = false;
+          };
 
           indent-guides = {
             render = true;
