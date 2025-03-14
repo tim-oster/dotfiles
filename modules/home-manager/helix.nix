@@ -131,6 +131,7 @@ in
         editor = {
           line-number = "relative";
           cursorline = true;
+          rulers = [ 120 ];
           insert-final-newline = true;
 
           cursor-shape.insert = "bar";
