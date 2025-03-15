@@ -136,6 +136,8 @@ in
 
           cursor-shape.insert = "bar";
 
+          completion-timeout = 50;
+
           file-picker = {
             hidden = false;
             parents = false;
@@ -154,6 +156,20 @@ in
 
           end-of-line-diagnostics = "hint";
           inline-diagnostics.cursor-line = "warning";
+        };
+
+        keys = {
+          insert = {
+            "A-left" = [
+              "move_prev_word_start"
+              "collapse_selection"
+            ];
+            "A-right" = [
+              "move_next_word_end"
+              "move_char_right"
+              "collapse_selection"
+            ];
+          };
         };
       };
     };
