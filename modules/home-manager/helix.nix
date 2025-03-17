@@ -159,6 +159,16 @@ in
         };
 
         keys = {
+          normal = {
+            "A-w" = "move_next_sub_word_start";
+            "A-b" = "move_prev_sub_word_start";
+            "A-e" = "move_next_sub_word_end";
+          };
+          select = {
+            "A-w" = "move_next_sub_word_start";
+            "A-b" = "move_prev_sub_word_start";
+            "A-e" = "move_next_sub_word_end";
+          };
           insert = {
             "A-left" = [
               "move_prev_word_start"
@@ -169,6 +179,7 @@ in
               "move_char_right"
               "collapse_selection"
             ];
+            "A-i" = "normal_mode";
           };
         };
       };
