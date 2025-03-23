@@ -38,6 +38,7 @@ in
     home.packages = lib.mkMerge [
       [
         pkgs.delve # go debugger
+        pkgs.devenv
 
         (pkgs.writeShellScriptBin "ws-dev" ''
           ALLOWED_FOLDERS=("dev")

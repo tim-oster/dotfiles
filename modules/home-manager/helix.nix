@@ -25,6 +25,7 @@ in
       ignores = [
         ".git/"
         ".direnv/"
+        ".devenv/"
         ".venv/"
         ".cache/"
         ".aider.*/*"
