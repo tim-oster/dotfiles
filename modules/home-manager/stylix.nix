@@ -17,12 +17,16 @@ in
   config = lib.mkIf cfg.enable {
     stylix = {
       enable = true;
-      cursor.size = 8;
+      cursor = {
+        size = 8;
+        package = pkgs.vanilla-dmz;
+        name = "Vanilla-DMZ";
+      };
 
       fonts = {
         sizes =
           let
-            size = 10;
+            size = 9;
           in
           {
             applications = size;
