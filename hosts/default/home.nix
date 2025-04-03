@@ -51,6 +51,7 @@
       enable = true;
       defaultEditor = true;
     };
+    cursor.enable = true;
 
     i3 = {
       enable = true;
