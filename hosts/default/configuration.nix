@@ -42,6 +42,9 @@
     ];
     shell = pkgs.fish;
   };
+  users.groups.dialout = {
+    members = [ "tim" ];
+  };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs outputs; };
