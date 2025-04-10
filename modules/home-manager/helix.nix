@@ -29,6 +29,7 @@ in
         ".venv/"
         ".cache/"
         ".aider.*/*"
+        "node_modules/"
       ];
 
       # default configs: https://github.com/helix-editor/helix/blob/master/languages.toml
