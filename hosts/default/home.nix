@@ -32,6 +32,11 @@
       enable = true;
       userName = "tim-oster";
       userEmail = "tim.oster99@gmail.com";
+      ignores = [
+        "/.direnv*"
+        "/.devenv*"
+        ".aider*"
+      ];
     };
   };
 
