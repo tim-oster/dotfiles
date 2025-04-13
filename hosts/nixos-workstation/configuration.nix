@@ -6,11 +6,14 @@
   ...
 }:
 {
-  imports = builtins.attrValues outputs.nixosModules ++ [
-    ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.default
-    inputs.stylix.nixosModules.stylix
-  ];
+  imports =
+    builtins.attrValues outputs.nixosModules
+    ++ builtins.attrValues outputs.sharedModules
+    ++ [
+      ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.default
+      inputs.stylix.nixosModules.stylix
+    ];
 
   nix.settings = {
     experimental-features = [
