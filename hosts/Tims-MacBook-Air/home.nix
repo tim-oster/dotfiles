@@ -15,6 +15,7 @@
       google-chrome
       obsidian
       neofetch
+      gimp
     ];
   };
 
@@ -48,11 +49,10 @@
     };
     cursor.enable = true;
 
-    # TODO broken package
-    # _1password = {
-    #   enable = true;
-    #   # 1password item: GitHub Workstation
-    #   gpgSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H";
-    # };
+    _1password = {
+      enable = true;
+      # 1password item: GitHub Workstation
+      gpgSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H";
+    };
   };
 }

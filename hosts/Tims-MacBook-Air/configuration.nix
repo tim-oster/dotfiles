@@ -83,8 +83,9 @@
 
     persistent-apps = [
       "/System/Applications/Launchpad.app"
-      "${pkgs.google-chrome}/Applicactions/Google Chrome.app"
+      "${pkgs.google-chrome}/Applications/Google Chrome.app"
       "${pkgs.alacritty}/Applications/Alacritty.app"
+      "${pkgs.obsidian}/Applications/Obsidian.app"
       "/System/Applications/System Settings.app"
     ];
     persistent-others = [
@@ -144,6 +145,14 @@
           HIDKeyboardModifierMappingSrc = 30064771299; # left_command
           HIDKeyboardModifierMappingDst = 30064771296; # left_control
         }
+        # {
+        #   HIDKeyboardModifierMappingSrc = 30064771300; # right_control
+        #   HIDKeyboardModifierMappingDst = 30064771303; # right_command
+        # }
+        # {
+        #   HIDKeyboardModifierMappingSrc = 30064771303; # right_command
+        #   HIDKeyboardModifierMappingDst = 30064771300; # right_control
+        # }
       ];
     in
     lib.mkAfter ''
@@ -175,7 +184,40 @@
   '';
 
   # TODO couple with stylix
+  # TODO split for podman
   system.activationScripts.extraUserActivation.text = lib.mkAfter ''
     osascript -e 'tell application "System Events" to set picture of every desktop to "${config.stylix.image}"'
+
+    if [[ $(${lib.getExe pkgs.podman} system connection list --format json | jq length) -eq 0 ]]; then
+      ${lib.getExe pkgs.podman} machine init podman-machine-default
+    fi
   '';
+
+  # TODO required for podman
+  system.activationScripts.extraActivation.text = ''
+    softwareupdate --install-rosetta --agree-to-license
+  '';
+
+  homebrew = {
+    enable = true;
+    brews = [ ];
+    casks = [
+      "1password"
+      "1password-cli"
+    ];
+    taps = [ ];
+    masApps = {
+      "Final Cut Pro" = 424389933;
+      "Compressor" = 424390742;
+    };
+
+    # TODO write brewfile to this repo to lock versions? adjust justfile to cleanup / upgrade versions
+
+    # enforce that no versions are updated automatically
+    global.autoUpdate = false;
+    onActivation.autoUpdate = false;
+    onActivation.upgrade = false;
+
+    onActivation.cleanup = "zap"; # aggressively removes all non-nix-managed formulae
+  };
 }

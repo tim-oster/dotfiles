@@ -33,9 +33,14 @@ in
       };
     };
 
-    services.podman.enable = true;
+    # TODO update doc
+    # aarch64-darwin is not supported directly, use homebrew instead
+    services.podman.enable = !pkgs.stdenv.isDarwin;
 
     home.packages = lib.mkMerge [
+      # TODO
+      (lib.optionals pkgs.stdenv.isDarwin [ pkgs.podman ])
+
       [
         pkgs.delve # go debugger
         pkgs.devenv
