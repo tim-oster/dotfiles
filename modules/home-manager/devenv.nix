@@ -33,13 +33,16 @@ in
       };
     };
 
-    services.podman.enable = true;
+    # aarch64-darwin is not supported directly
+    services.podman.enable = !pkgs.stdenv.isDarwin;
 
     home.packages = lib.mkMerge [
       [
         pkgs.delve # go debugger
         pkgs.devenv
+      ]
 
+      (lib.mkIf pkgs.stdenv.isLinux [
         (pkgs.writeShellScriptBin "ws-dev" ''
           ALLOWED_FOLDERS=("dev")
           DIR=''\$(fd --full-path $HOME --max-depth=1 --type directory ''\${ALLOWED_FOLDERS[@]} | rofi -dmenu -p "Select workspace: ")
@@ -59,7 +62,7 @@ in
           sleep 0.1
           alacritty &
         '')
-      ]
+      ])
     ];
   };
 }
