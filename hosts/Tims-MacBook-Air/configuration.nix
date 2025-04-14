@@ -160,21 +160,48 @@
       hidutil property --matching '${builtins.toJSON device}' --set '{"UserKeyMapping":${builtins.toJSON mappings}}' > /dev/null
     '';
 
-  # TODO go through all options
   system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
+  system.defaults.NSGlobalDomain.AppleShowAllFiles = true;
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 14;
   system.defaults.NSGlobalDomain.KeyRepeat = 2;
 
+  # do not show special chars on key hold
+  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false;
+
   # disable natural scrolling
   system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
+  system.defaults.".GlobalPreferences"."com.apple.mouse.scaling" = 2.0;
 
   system.defaults = {
+    # force 24h format regardless of configured tiemzone
     NSGlobalDomain.AppleICUForce24HourTime = true;
+    NSGlobalDomain.AppleMeasurementUnits = "Centimeters";
+    NSGlobalDomain.AppleMetricUnits = 1;
+    NSGlobalDomain.AppleTemperatureUnit = "Celsius";
+
     # TODO couple this to stylix somehow?
     NSGlobalDomain.AppleInterfaceStyle = "Dark";
+
+    NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
+    NSGlobalDomain.NSAutomaticDashSubstitutionEnabled = false;
+    NSGlobalDomain.NSAutomaticInlinePredictionEnabled = false;
+    NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
+    NSGlobalDomain.NSAutomaticQuoteSubstitutionEnabled = false;
+    NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
+
+    NSGlobalDomain."com.apple.sound.beep.volume" = 0.0;
+
+    SoftwareUpdate.AutomaticallyInstallMacOSUpdates = false; # false by default - enforce anyways
+
+    WindowManager.EnableStandardClickToShowDesktop = false;
+
+    # TODO
+    controlcenter.BatteryShowPercentage = true;
+    controlcenter.NowPlaying = true;
+    controlcenter.Sound = true;
   };
 
-  system.activationScripts.postUserActivation.text = ''
+  system.activationScripts.postUserActivation.text = lib.mkAfter ''
     # setup custom keyboard layouts (requires restart)
     sudo rm -f "/Library/Keyboard Layouts/*osx-win-germany.keylayout"
     sudo cp "${../../modules/darwin/osx-win-germany.keylayout}" "/Library/Keyboard Layouts"
@@ -194,7 +221,7 @@
   '';
 
   # TODO required for podman
-  system.activationScripts.extraActivation.text = ''
+  system.activationScripts.extraActivation.text = lib.mkAfter ''
     softwareupdate --install-rosetta --agree-to-license
   '';
 
@@ -209,6 +236,7 @@
     masApps = {
       "Final Cut Pro" = 424389933;
       "Compressor" = 424390742;
+      "Luminar Neo" = 1584373150;
     };
 
     # TODO write brewfile to this repo to lock versions? adjust justfile to cleanup / upgrade versions
@@ -219,5 +247,19 @@
     onActivation.upgrade = false;
 
     onActivation.cleanup = "zap"; # aggressively removes all non-nix-managed formulae
+  };
+
+  # TODO
+  services.karabiner-elements = {
+    enable = true;
+    # v15+ causes errors
+    package = pkgs.karabiner-elements.overrideAttrs (old: {
+      version = "14.13.0";
+
+      src = pkgs.fetchurl {
+        inherit (old.src) url;
+        hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
+      };
+    });
   };
 }

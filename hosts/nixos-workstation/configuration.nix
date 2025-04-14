@@ -50,6 +50,7 @@
   };
 
   home-manager = {
+    useGlobalPkgs = true;
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
       "tim" = import ./home.nix;
