@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   outputs,
   ...
 }:
@@ -95,6 +96,7 @@ in
       neofetch
       gimp
       # walkingpadController # TODO
+      choose-gui
     ];
   };
 
@@ -142,8 +144,20 @@ in
 
         mode.main.binding = {
           ctrl-alt-enter = "exec-and-forget open -n ${pkgs.alacritty}/Applications/Alacritty.app";
+          ctrl-alt-d =
+            let
+              script = pkgs.writeShellScriptBin "mac-app-picker" ''
+                apps=$(${lib.getExe pkgs.fd} --follow --max-depth=1 --glob "*.app" /Applications/ /Applications/Utilities/ /System/Applications/ /System/Applications/Utilities/ ~/Applications/Home\ Manager\ Apps/)
+                selected_index=$(printf "%s\n" "$apps" | sed -E 's/^(\/([^\/])+)+\/(.+)\.app\/?$/\3/g' | ${lib.getExe pkgs.choose-gui} -i)
 
-          # i3 wraps focus by default
+                if [[ $selected_index != -1 ]]; then
+                  app_path=$(printf "%s\n" "$apps" | sed -n "$((selected_index + 1))p")
+                  open -n "$app_path"
+                fi
+              '';
+            in
+            "exec-and-forget ${lib.getExe script}";
+
           ctrl-alt-left = "focus --boundaries-action wrap-around-the-workspace left";
           ctrl-alt-down = "focus --boundaries-action wrap-around-the-workspace down";
           ctrl-alt-up = "focus --boundaries-action wrap-around-the-workspace up";
@@ -154,8 +168,6 @@ in
           ctrl-alt-shift-up = "move up";
           ctrl-alt-shift-right = "move right";
 
-          # Consider using "join-with" command as a "split" replacement if you want to enable;
-          # normalizations
           ctrl-alt-h = "split horizontal";
           ctrl-alt-shift-v = "split vertical";
 
@@ -164,7 +176,6 @@ in
           ctrl-alt-s = "layout v_accordion"; # "layout stacking" in i3
           ctrl-alt-w = "layout h_accordion"; # "layout tabbed" in i3
           ctrl-alt-e = "layout tiles horizontal vertical"; # "layout toggle split" in i3
-
           ctrl-alt-shift-space = "layout floating tiling"; # "floating toggle" in i3
           ctrl-alt-shift-q = "close";
 
@@ -201,12 +212,6 @@ in
           enter = "mode main";
           esc = "mode main";
         };
-
-        exec-on-workspace-change = [
-          "/bin/bash"
-          "-c"
-          "sketchybar --trigger aerospace_workspace_change FOCUSED=$AEROSPACE_FOCUSED_WORKSPACE"
-        ];
       };
     };
   };

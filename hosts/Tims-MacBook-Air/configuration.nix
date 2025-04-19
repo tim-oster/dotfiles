@@ -129,36 +129,6 @@
   system.keyboard = {
     enableKeyMapping = true;
   };
-  system.activationScripts.keyboard.text =
-    let
-      device = {
-        VendorID = 12951; # 0x3297
-        ProductID = 18806; # 0x4976
-      };
-      # mappings can be generated using this tool: https://hidutil-generator.netlify.app/
-      mappings = [
-        {
-          HIDKeyboardModifierMappingSrc = 30064771296; # left_control
-          HIDKeyboardModifierMappingDst = 30064771299; # left_command
-        }
-        {
-          HIDKeyboardModifierMappingSrc = 30064771299; # left_command
-          HIDKeyboardModifierMappingDst = 30064771296; # left_control
-        }
-        # {
-        #   HIDKeyboardModifierMappingSrc = 30064771300; # right_control
-        #   HIDKeyboardModifierMappingDst = 30064771303; # right_command
-        # }
-        # {
-        #   HIDKeyboardModifierMappingSrc = 30064771303; # right_command
-        #   HIDKeyboardModifierMappingDst = 30064771300; # right_control
-        # }
-      ];
-    in
-    lib.mkAfter ''
-      # special remapping for ErgodoxEZ
-      hidutil property --matching '${builtins.toJSON device}' --set '{"UserKeyMapping":${builtins.toJSON mappings}}' > /dev/null
-    '';
 
   system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
   system.defaults.NSGlobalDomain.AppleShowAllFiles = true;
@@ -231,6 +201,7 @@
     casks = [
       "1password"
       "1password-cli"
+      "karabiner-elements"
     ];
     taps = [ ];
     masApps = {
@@ -247,19 +218,5 @@
     onActivation.upgrade = false;
 
     onActivation.cleanup = "zap"; # aggressively removes all non-nix-managed formulae
-  };
-
-  # TODO
-  services.karabiner-elements = {
-    enable = true;
-    # v15+ causes errors
-    package = pkgs.karabiner-elements.overrideAttrs (old: {
-      version = "14.13.0";
-
-      src = pkgs.fetchurl {
-        inherit (old.src) url;
-        hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
-      };
-    });
   };
 }
