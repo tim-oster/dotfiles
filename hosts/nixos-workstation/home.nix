@@ -21,6 +21,7 @@
       obsidian
       pavucontrol
       neofetch
+      vial
     ];
   };
 
