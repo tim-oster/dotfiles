@@ -90,50 +90,15 @@ in
     stateVersion = "24.11";
 
     packages = with pkgs; [
-      google-chrome
-      obsidian
-      neofetch
       gimp
       # walkingpadController # TODO
       choose-gui
     ];
   };
 
-  programs = {
-    # apply stylix to neovim as well
-    neovim.enable = true;
-
-    git = {
-      enable = true;
-      userName = "tim-oster";
-      userEmail = "tim.oster99@gmail.com";
-      ignores = [
-        "/.direnv*"
-        "/.devenv*"
-        ".aider*"
-      ];
-    };
-  };
-
   custom = {
-    stylix = {
-      enable = true;
-      fontSize = 12;
-    };
-    terminal.enable = true;
-    devenv.enable = true;
-
-    helix = {
-      enable = true;
-      defaultEditor = true;
-    };
-    cursor.enable = true;
-
-    _1password = {
-      enable = true;
-      # 1password item: GitHub Workstation
-      gpgSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H";
-    };
+    shared.enable = true;
+    stylix.fontSize = 12;
 
     aerospace = {
       enable = true;
