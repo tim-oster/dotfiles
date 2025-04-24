@@ -21,6 +21,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    xsession.initExtra = lib.mkAfter ''
+      xset r rate 200 40
+    '';
+
     xsession.windowManager.i3 = {
       enable = true;
       package = pkgs.i3-gaps;
