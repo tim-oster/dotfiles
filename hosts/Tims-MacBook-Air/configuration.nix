@@ -28,7 +28,6 @@
   '';
 
   nixpkgs.hostPlatform = "aarch64-darwin";
-
   system.stateVersion = 6;
 
   # auto apply new settings without having to logout and login
