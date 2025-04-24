@@ -98,6 +98,11 @@
     groupMembers = [ "tim" ];
   };
 
+  custom.vial = {
+    enable = true;
+    groupMembers = [ "tim" ];
+  };
+
   services = {
     gnome.gnome-keyring.enable = true;
     geoclue2.enable = true;
