@@ -16,9 +16,11 @@
 
     packages = with pkgs; [
       pavucontrol
-      vial
+      (pkgs.callPackage ../../modules/packages/vial.nix { })
     ];
   };
+
+  programs.vscode.enable = true;
 
   custom = {
     shared.enable = true;
