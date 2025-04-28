@@ -21,6 +21,8 @@ in
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = false;
         extensions = [
+          pkgs.vscode-extensions.rust-lang.rust-analyzer
+
           (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
             mktplcRef = {
               name = "vscode-buf";
@@ -83,14 +85,6 @@ in
               publisher = "rooveterinaryinc";
               version = "3.14.3";
               hash = "sha256-hYtjcxlHwtvESs08WdWuMGi10LIvdH5SEBeAI7ah8oc=";
-            };
-          })
-          (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-            mktplcRef = {
-              name = "rust-analyzer";
-              publisher = "rust-lang";
-              version = "0.3.2441";
-              hash = "sha256-BcEFKPwHGWzvYnQiieFzVQpbC0gH1gbrPDeWDbjsbjo=";
             };
           })
           (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
