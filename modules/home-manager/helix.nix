@@ -52,6 +52,7 @@ in
           vscode-json-language-server.command = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
           typescript-language-server.command = (lib.getExe pkgs.typescript-language-server);
           yaml-language-server.command = (lib.getExe pkgs.yaml-language-server);
+          buf.command = (lib.getExe pkgs.buf);
         };
 
         language = [
@@ -126,6 +127,11 @@ in
                 "typescript"
               ];
             };
+          }
+          {
+            name = "protobuf";
+            auto-format = true;
+            language-servers = [ "buf" ];
           }
         ];
       };
