@@ -76,6 +76,15 @@ in
             "${modifier}+Return" = "exec ${lib.getExe cfg.terminal}";
             "${modifier}+d" = "exec ${lib.getExe pkgs.rofi} -show run";
             "${modifier}+Shift+x" = "exec ${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
+            "${modifier}+h" = "focus left";
+            "${modifier}+j" = "focus down";
+            "${modifier}+k" = "focus up";
+            "${modifier}+l" = "focus right";
+            "${modifier}+shift+h" = "move left";
+            "${modifier}+shift+j" = "move down";
+            "${modifier}+shift+k" = "move up";
+            "${modifier}+shift+l" = "move right";
+            "${modifier}+b" = "split horizontal";
           };
       };
     };
