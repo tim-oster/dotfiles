@@ -16,6 +16,7 @@
 
     packages = with pkgs; [
       pavucontrol
+      nautilus
       (pkgs.callPackage ../../modules/packages/vial.nix { })
     ];
   };
