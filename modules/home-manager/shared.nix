@@ -49,6 +49,7 @@ in
         defaultEditor = lib.mkDefault true;
       };
       cursor.enable = lib.mkDefault true;
+      vscode.enable = lib.mkDefault true;
 
       _1password = {
         enable = lib.mkDefault true;

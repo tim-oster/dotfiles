@@ -21,8 +21,6 @@
     ];
   };
 
-  programs.vscode.enable = true;
-
   custom = {
     shared.enable = true;
     wifimenu.enable = true;
