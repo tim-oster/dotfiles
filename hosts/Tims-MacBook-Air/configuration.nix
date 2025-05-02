@@ -14,18 +14,24 @@
       inputs.stylix.darwinModules.stylix
     ];
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+    optimise.automatic = true;
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 1w";
+    };
+    # needed for devenv
+    extraOptions = ''
+      extra-substituters = https://devenv.cachix.org
+      extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+    '';
   };
-  nix.optimise.automatic = true;
-  # needed for devenv
-  nix.extraOptions = ''
-    extra-substituters = https://devenv.cachix.org
-    extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
-  '';
 
   nixpkgs.hostPlatform = "aarch64-darwin";
   system.stateVersion = 6;

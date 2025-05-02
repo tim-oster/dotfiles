@@ -15,25 +15,35 @@
       inputs.stylix.nixosModules.stylix
     ];
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    auto-optimise-store = true;
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 1w";
+    };
+    # needed for devenv
+    extraOptions = ''
+      extra-substituters = https://devenv.cachix.org
+      extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+    '';
   };
-  # needed for devenv
-  nix.extraOptions = ''
-    extra-substituters = https://devenv.cachix.org
-    extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
-  '';
 
   system.stateVersion = "24.11";
 
   networking.hostName = "nixos-workstation";
   networking.networkmanager.enable = true;
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 10;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
   users.users.tim = {
