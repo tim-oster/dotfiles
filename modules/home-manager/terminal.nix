@@ -17,7 +17,23 @@ in
   config = lib.mkIf cfg.enable {
     home.shell.enableShellIntegration = true;
 
-    programs.alacritty.enable = true;
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        keyboard.bindings = [
+          {
+            key = "I";
+            mods = "Alt|Shift";
+            action = "ToggleViMode";
+          }
+          {
+            key = "Escape";
+            mode = "Vi";
+            action = "ToggleViMode";
+          }
+        ];
+      };
+    };
 
     programs.fish = {
       enable = true;
