@@ -62,6 +62,14 @@ in
           sleep 0.1
           alacritty &
         '')
+
+        (pkgs.writeShellScriptBin "screenshot-area" ''
+          ${lib.getExe pkgs.maim} -s | ${lib.getExe pkgs.xclip} -selection clipboard -target image/png
+        '')
+        (pkgs.writeShellScriptBin "screenshot-active-window" ''
+          active_window=$(${lib.getExe pkgs.xdotool} getactivewindow)
+          ${lib.getExe pkgs.maim} -i $active_window | ${lib.getExe pkgs.xclip} -selection clipboard -target image/png
+        '')
       ])
     ];
   };
