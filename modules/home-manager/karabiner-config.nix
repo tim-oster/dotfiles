@@ -129,22 +129,34 @@ in
                         type = "basic";
                         conditions = conditions;
                         from = {
-                          key_code = "right_control";
-                          modifiers.optional = [ "right_option" ];
+                          simultaneous = [
+                            { key_code = "right_control"; }
+                            { key_code = "right_option"; }
+                          ];
+                          modifiers.optional = [ "any" ];
                         };
                         to = [
-                          { key_code = "right_control"; }
+                          {
+                            key_code = "right_control";
+                            modifiers = [ "right_option" ];
+                          }
                         ];
                       }
                       {
                         type = "basic";
                         conditions = conditions;
                         from = {
-                          key_code = "left_control";
-                          modifiers.optional = [ "left_option" ];
+                          simultaneous = [
+                            { key_code = "left_control"; }
+                            { key_code = "left_option"; }
+                          ];
+                          modifiers.optional = [ "any" ];
                         };
                         to = [
-                          { key_code = "left_control"; }
+                          {
+                            key_code = "left_control";
+                            modifiers = [ "left_option" ];
+                          }
                         ];
                       }
                       # undo basic command<->ctrl remapping in terminal
@@ -156,7 +168,10 @@ in
                           modifiers.optional = [ "any" ];
                         };
                         to = [
-                          { key_code = "right_control"; }
+                          {
+                            key_code = "right_control";
+                            lazy = true;
+                          }
                         ];
                       }
                       {
@@ -167,7 +182,10 @@ in
                           modifiers.optional = [ "any" ];
                         };
                         to = [
-                          { key_code = "right_command"; }
+                          {
+                            key_code = "right_command";
+                            lazy = true;
+                          }
                         ];
                       }
                       {
@@ -178,7 +196,10 @@ in
                           modifiers.optional = [ "any" ];
                         };
                         to = [
-                          { key_code = "left_control"; }
+                          {
+                            key_code = "left_control";
+                            lazy = true;
+                          }
                         ];
                       }
                       {
@@ -189,7 +210,10 @@ in
                           modifiers.optional = [ "any" ];
                         };
                         to = [
-                          { key_code = "left_command"; }
+                          {
+                            key_code = "left_command";
+                            lazy = true;
+                          }
                         ];
                       }
                     ];
