@@ -13,7 +13,7 @@ in
   options.custom.aerospace = {
     enable = lib.mkEnableOption "aerospace config";
     terminal = lib.mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
     };
   };
 
@@ -61,17 +61,17 @@ in
             in
             "exec-and-forget ${lib.getExe script}";
 
-          ctrl-alt-left = "focus --boundaries-action wrap-around-the-workspace left";
-          ctrl-alt-down = "focus --boundaries-action wrap-around-the-workspace down";
-          ctrl-alt-up = "focus --boundaries-action wrap-around-the-workspace up";
-          ctrl-alt-right = "focus --boundaries-action wrap-around-the-workspace right";
+          ctrl-alt-h = "focus --boundaries-action wrap-around-the-workspace left";
+          ctrl-alt-j = "focus --boundaries-action wrap-around-the-workspace down";
+          ctrl-alt-k = "focus --boundaries-action wrap-around-the-workspace up";
+          ctrl-alt-l = "focus --boundaries-action wrap-around-the-workspace right";
 
-          ctrl-alt-shift-left = "move left";
-          ctrl-alt-shift-down = "move down";
-          ctrl-alt-shift-up = "move up";
-          ctrl-alt-shift-right = "move right";
+          ctrl-alt-shift-h = "move left";
+          ctrl-alt-shift-j = "move down";
+          ctrl-alt-shift-k = "move up";
+          ctrl-alt-shift-l = "move right";
 
-          ctrl-alt-h = "split horizontal";
+          ctrl-alt-b = "split horizontal";
           ctrl-alt-v = "split vertical";
 
           ctrl-alt-f = "fullscreen";
