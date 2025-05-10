@@ -48,8 +48,8 @@ in
         enable = lib.mkDefault true;
         defaultEditor = lib.mkDefault true;
       };
-      cursor.enable = lib.mkDefault true;
-      vscode.enable = lib.mkDefault true;
+      cursor.enable = lib.mkDefault false;
+      vscode.enable = lib.mkDefault false;
 
       _1password = {
         enable = lib.mkDefault true;
