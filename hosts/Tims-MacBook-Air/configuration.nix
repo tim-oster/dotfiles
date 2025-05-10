@@ -62,6 +62,8 @@
     fish.enable = true;
   };
 
+  services.tailscale.enable = true;
+
   environment = {
     variables = {
       EDITOR = "nvim";
