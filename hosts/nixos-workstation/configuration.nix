@@ -103,6 +103,7 @@ in
     displayHeight = 1440;
     useStylix = true;
     videoDriver = "nvidia";
+    autoLoginUser = username;
   };
 
   custom.stylix = {

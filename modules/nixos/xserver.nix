@@ -24,6 +24,10 @@ in
     videoDriver = lib.mkOption {
       type = lib.types.str;
     };
+    autoLoginUser = lib.mkOption {
+      type = with lib.types; nullOr str;
+      default = null;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -42,7 +46,9 @@ in
         }
       ];
 
-      displayManager.lightdm = {
+      displayManager.autoLogin.user = cfg.autoLoginUser; # disabled if null
+
+      displayManager.lightdm = lib.mkIf (cfg.autoLoginUser != null) {
         enable = true;
         extraSeatDefaults = ''
           user-session = none+i3
