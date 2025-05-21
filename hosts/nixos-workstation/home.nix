@@ -24,6 +24,7 @@
   custom = {
     shared.enable = true;
     wifimenu.enable = true;
+    vscode.enable = true;
 
     redshift = {
       enable = true;

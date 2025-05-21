@@ -1,0 +1,81 @@
+{
+  "border": "normal",
+  "floating": "auto_off",
+  "layout": "splith",
+  "marks": [],
+  "percent": 1,
+  "type": "con",
+  "nodes": [
+    {
+      "border": "normal",
+      "floating": "auto_off",
+      "layout": "tabbed",
+      "marks": [],
+      "percent": 0.235,
+      "type": "con",
+      "nodes": [
+        {
+          "border": "normal",
+          "current_border_width": 2,
+          "floating": "auto_off",
+          "name": "browser",
+          "percent": 1,
+          "swallows": [
+            {
+              "class": "^Google\\-chrome$",
+              "instance": "^google\\-chrome$"
+            }
+          ],
+          "type": "con"
+        }
+      ]
+    },
+    {
+      "border": "normal",
+      "floating": "auto_off",
+      "layout": "tabbed",
+      "percent": 0.53,
+      "type": "con",
+      "nodes": [
+        {
+          "border": "normal",
+          "current_border_width": 2,
+          "floating": "auto_off",
+          "name": "vscode",
+          "percent": 1,
+          "swallows": [
+            {
+              "instance": "^code$",
+              "class": "^Code$"
+            }
+          ],
+          "type": "con"
+        }
+      ]
+    },
+    {
+      "border": "normal",
+      "floating": "auto_off",
+      "layout": "tabbed",
+      "marks": [],
+      "percent": 0.235,
+      "type": "con",
+      "nodes": [
+        {
+          "border": "normal",
+          "current_border_width": 2,
+          "floating": "auto_off",
+          "name": "misc",
+          "percent": 1,
+          "swallows": [
+            {
+              "class": "^Alacritty$",
+              "instance": "^Alacritty$"
+            }
+          ],
+          "type": "con"
+        }
+      ]
+    }
+  ]
+}

@@ -63,6 +63,21 @@ in
           alacritty &
         '')
 
+        (pkgs.writeShellScriptBin "ws-code" ''
+          ALLOWED_FOLDERS=("dev")
+          DIR=''\$(fd --full-path $HOME --max-depth=1 --type directory ''\${ALLOWED_FOLDERS[@]} | rofi -dmenu -p "Select workspace: ")
+
+          if [[ ''\$DIR -eq "" ]]; then
+            exit
+          fi
+
+          i3-msg "append_layout ${./ws-code.json}"
+
+          google-chrome-stable &
+          code -n "''\$HOME/''\$DIR" &
+          alacritty &
+        '')
+
         (pkgs.writeShellScriptBin "screenshot-area" ''
           ${lib.getExe pkgs.maim} -s | ${lib.getExe pkgs.xclip} -selection clipboard -target image/png
         '')
