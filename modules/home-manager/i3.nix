@@ -46,7 +46,7 @@ in
             }
             {
               command = "xset r rate 200 40";
-              always = false;
+              always = true;
               notification = false;
             }
             {
