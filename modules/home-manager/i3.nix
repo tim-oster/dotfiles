@@ -21,10 +21,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    xsession.initExtra = lib.mkAfter ''
-      xset r rate 200 40
-    '';
-
     xsession.windowManager.i3 = {
       enable = true;
       package = pkgs.i3-gaps;
@@ -46,6 +42,16 @@ in
             {
               command = "i3-msg workspace 1";
               always = false;
+              notification = false;
+            }
+            {
+              command = "xset r rate 200 40";
+              always = false;
+              notification = false;
+            }
+            {
+              command = "xset -dpms && xset s off"; # disable DPMS and screen blanking
+              always = true;
               notification = false;
             }
           ]
