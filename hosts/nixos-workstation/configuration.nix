@@ -5,6 +5,9 @@
   outputs,
   ...
 }:
+let
+  username = "tim";
+in
 {
   imports =
     builtins.attrValues outputs.nixosModules
@@ -40,15 +43,19 @@
   networking.hostName = "nixos-workstation";
   networking.networkmanager.enable = true;
 
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 10;
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 10;
+      };
+    };
   };
-  boot.loader.efi.canTouchEfiVariables = true;
 
-  users.users.tim = {
+  users.users."${username}" = {
     isNormalUser = true;
-    description = "tim";
+    description = username;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -56,14 +63,14 @@
     shell = pkgs.fish;
   };
   users.groups.dialout = {
-    members = [ "tim" ];
+    members = [ username ];
   };
 
   home-manager = {
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      "tim" = import ./home.nix;
+      "${username}" = import ./home.nix;
     };
   };
 
@@ -72,7 +79,7 @@
     _1password.enable = true;
     _1password-gui = {
       enable = true;
-      polkitPolicyOwners = [ "tim" ];
+      polkitPolicyOwners = [ username ];
     };
   };
 
@@ -105,12 +112,12 @@
 
   custom.oryx = {
     enable = true;
-    groupMembers = [ "tim" ];
+    groupMembers = [ username ];
   };
 
   custom.vial = {
     enable = true;
-    groupMembers = [ "tim" ];
+    groupMembers = [ username ];
   };
 
   services = {
