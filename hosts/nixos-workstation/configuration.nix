@@ -5,6 +5,7 @@
   outputs,
   ...
 }:
+
 let
   username = "tim";
 in
@@ -51,6 +52,7 @@ in
         configurationLimit = 10;
       };
     };
+    initrd.luks.devices.cryptroot.device = "/dev/disk/by-uuid/9d75b42d-76dd-47db-9ac8-4b3ea77826c6";
   };
 
   users.users."${username}" = {
