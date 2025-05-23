@@ -49,11 +49,16 @@ in
     home.shellAliases.cat = "bat";
 
     # better ls
-    programs.lsd.enable = true;
+    programs.lsd = {
+      enable = true;
+      enableBashIntegration = false;
+      enableFishIntegration = false;
+      enableZshIntegration = false;
+    };
     home.shellAliases = {
-      "ls" = "lsd";
-      "ll" = "lsd -alh";
-      "tree" = "lsd --tree";
+      "ls" = lib.mkForce "lsd";
+      "ll" = lib.mkForce "lsd -alh";
+      "tree" = lib.mkForce "lsd --tree";
     };
 
     # better find
