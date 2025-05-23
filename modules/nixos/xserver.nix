@@ -48,7 +48,7 @@ in
 
       displayManager.autoLogin.user = cfg.autoLoginUser; # disabled if null
 
-      displayManager.lightdm = lib.mkIf (cfg.autoLoginUser != null) {
+      displayManager.lightdm = {
         enable = true;
         extraSeatDefaults = ''
           user-session = none+i3

@@ -140,6 +140,9 @@ in
   security = {
     rtkit.enable = true;
     pam.services.login.enableGnomeKeyring = true;
+    # required to allow i3lock to verify the user's password
+    pam.services.i3lock.enable = true;
+
   };
 
   hardware = {
