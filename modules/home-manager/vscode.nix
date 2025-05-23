@@ -15,6 +15,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = lib.mkMerge [
+      [
+        pkgs.nil
+      ]
+    ];
+
     programs.vscode = {
       enable = true;
       profiles.default = {
@@ -101,6 +107,10 @@ in
           "update.showReleaseNotes" = false;
 
           "editor.formatOnSave" = true;
+
+          "[sql]" = {
+            "editor.formatOnSave" = false;
+          };
 
           "go.alternateTools" = {
             "go" = "${lib.getExe pkgs.go}";

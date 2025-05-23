@@ -30,6 +30,7 @@ in
       enable = true;
       settings = {
         git.autoFetch = false;
+        git.overrideGpg = true;
       };
     };
 
