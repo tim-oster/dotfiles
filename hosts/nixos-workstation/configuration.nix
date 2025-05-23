@@ -125,7 +125,6 @@ in
 
   services = {
     gnome.gnome-keyring.enable = true;
-    geoclue2.enable = true;
     printing.enable = true;
     blueman.enable = true;
     pulseaudio.enable = false;

@@ -28,7 +28,6 @@
 
     redshift = {
       enable = true;
-      geoProvider = "geoclue2";
       nightTemp = 3000;
     };
 

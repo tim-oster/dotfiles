@@ -23,12 +23,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.redshift = {
+    services.redshift = lib.mkIf (cfg.geoProvider != "manual") {
       enable = true;
       provider = cfg.geoProvider;
     };
 
     home.packages = lib.mkMerge [
+      (lib.mkIf (cfg.geoProvider == "manual") [ pkgs.redshift ])
       [
         (pkgs.writeShellScriptBin "redshift-on" "redshift -P -O ${toString cfg.nightTemp}")
         (pkgs.writeShellScriptBin "redshift-off" "redshift -x")
