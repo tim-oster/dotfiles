@@ -17,10 +17,10 @@ in
     system.keyboard = {
       enableKeyMapping = true;
     };
-    system.activationScripts.postUserActivation.text = lib.mkAfter ''
+    system.activationScripts.postActivation.text = lib.mkAfter ''
       # setup custom keyboard layouts (requires restart)
-      sudo rm -f "/Library/Keyboard Layouts/*osx-win-germany.keylayout"
-      sudo cp "${./osx-win-germany.keylayout}" "/Library/Keyboard Layouts"
+      rm -f "/Library/Keyboard Layouts/*osx-win-germany.keylayout"
+      cp "${./osx-win-germany.keylayout}" "/Library/Keyboard Layouts"
     '';
   };
 }

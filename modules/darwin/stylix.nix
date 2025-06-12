@@ -13,7 +13,7 @@ in
 
   config = lib.mkIf cfg.enable {
     # set background image on macos
-    system.activationScripts.extraUserActivation.text = lib.mkAfter ''
+    system.activationScripts.extraActivation.text = lib.mkAfter ''
       osascript -e 'tell application "System Events" to set picture of every desktop to "${config.stylix.image}"'
     '';
 

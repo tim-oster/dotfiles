@@ -5,6 +5,10 @@
   outputs,
   ...
 }:
+
+let
+  username = "timoster";
+in
 {
   imports =
     builtins.attrValues outputs.darwinModules
@@ -35,18 +39,19 @@
 
   nixpkgs.hostPlatform = "aarch64-darwin";
   system.stateVersion = 6;
+  system.primaryUser = username;
 
   # auto apply new settings without having to logout and login
-  system.activationScripts.postUserActivation.text = lib.mkAfter ''
+  system.activationScripts.postActivation.text = lib.mkAfter ''
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   '';
 
   # needed to support setting a custom shell
-  users.knownUsers = [ "timoster" ];
-  users.users.timoster = {
+  users.knownUsers = [ username ];
+  users.users."${username}" = {
     uid = 501;
-    name = "timoster";
-    home = "/Users/timoster";
+    name = username;
+    home = "/Users/${username}";
     shell = pkgs.fish;
   };
 
@@ -54,7 +59,7 @@
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      "timoster" = import ./home.nix;
+      "${username}" = import ./home.nix;
     };
   };
 
@@ -82,7 +87,10 @@
       theme = "gruvbox-dark-medium";
     };
 
-    podman.enable = true;
+    podman = {
+      enable = true;
+      asUser = username;
+    };
     win-keyboard.enable = true;
 
     macos-defaults = {
@@ -95,8 +103,8 @@
         "/System/Applications/System Settings.app"
       ];
       dock-dirs = [
-        "/Users/timoster"
-        "/Users/timoster/Downloads"
+        "/Users/${username}"
+        "/Users/${username}/Downloads"
       ];
     };
   };

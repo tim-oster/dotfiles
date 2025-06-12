@@ -12,19 +12,18 @@ in
 
   options.custom.podman = {
     enable = lib.mkEnableOption "enable podman";
+    asUser = lib.mkOption { type = lib.types.str; };
   };
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = lib.mkMerge [ [ pkgs.podman ] ];
 
-    system.activationScripts.extraUserActivation.text = lib.mkAfter ''
-      if [[ $(${lib.getExe pkgs.podman} system connection list --format json | jq length) -eq 0 ]]; then
-        ${lib.getExe pkgs.podman} machine init podman-machine-default
-      fi
-    '';
-
     system.activationScripts.extraActivation.text = lib.mkAfter ''
-      softwareupdate --install-rosetta --agree-to-license
+      if [[ $(su -l "${cfg.asUser}" -c "${lib.getExe pkgs.podman} system connection list --format json | jq length") -eq 0 ]]; then
+        su -l "${cfg.asUser}" -c "${lib.getExe pkgs.podman} machine init podman-machine-default"
+      fi
+
+      sudo -u ${cfg.asUser} softwareupdate --install-rosetta --agree-to-license
     '';
   };
 }
