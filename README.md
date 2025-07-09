@@ -11,6 +11,15 @@
 2. [Install homebrew](https://brew.sh/)
 3. Run `just switch`
 
+
+## Useful commands
+
+If fonts are broken after update, resseting the font cache might help:
+```bash
+# found here: https://github.com/nix-community/home-manager/issues/6160#issuecomment-2510227909
+fc-cache -rv
+```
+
 ## Full Disk Encryption
 
 ### Encrypt Post-Installation
