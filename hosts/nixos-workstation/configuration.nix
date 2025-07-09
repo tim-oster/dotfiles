@@ -97,30 +97,32 @@ in
     ];
   };
 
-  custom.locale.enable = true;
+  custom = {
+    locale.enable = true;
 
-  custom.xserver = {
-    enable = true;
-    displayWidth = 5120;
-    displayHeight = 1440;
-    useStylix = true;
-    videoDriver = "nvidia";
-    autoLoginUser = username;
-  };
+    xserver = {
+      enable = true;
+      displayWidth = 5120;
+      displayHeight = 1440;
+      useStylix = true;
+      videoDriver = "nvidia";
+      autoLoginUser = username;
+    };
 
-  custom.stylix = {
-    enable = true;
-    theme = "gruvbox-dark-medium";
-  };
+    stylix = {
+      enable = true;
+      theme = "gruvbox-dark-medium";
+    };
 
-  custom.oryx = {
-    enable = true;
-    groupMembers = [ username ];
-  };
+    oryx = {
+      enable = true;
+      groupMembers = [ username ];
+    };
 
-  custom.vial = {
-    enable = true;
-    groupMembers = [ username ];
+    vial = {
+      enable = true;
+      groupMembers = [ username ];
+    };
   };
 
   services = {
