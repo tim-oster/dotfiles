@@ -14,6 +14,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # stylix theme messes up some UI components in zed
+    stylix.targets.zed.enable = false;
+
     programs.zed-editor = {
       enable = true;
 
@@ -51,8 +54,6 @@ in
           hard_tabs = true;
           hour_format = "hour24";
 
-          languages = { };
-
           preview_tabs.enabeld = false;
 
           preferred_line_length = ruler_width;
@@ -70,6 +71,11 @@ in
           vim = {
             toggle_relative_line_numbers = true;
           };
+
+          buffer_font_family = config.stylix.fonts.monospace.name;
+          buffer_font_size = config.stylix.fonts.sizes.terminal * 4.0 / 3.0;
+          ui_font_family = config.stylix.fonts.sansSerif.name;
+          ui_font_size = config.stylix.fonts.sizes.applications * 4.0 / 3.0;
         };
     };
   };
