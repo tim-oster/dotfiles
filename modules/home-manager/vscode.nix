@@ -112,11 +112,11 @@ in
             "editor.formatOnSave" = false;
           };
 
-          "go.alternateTools" = {
-            "go" = "${lib.getExe pkgs.go}";
-            "gopls" = "${lib.getExe pkgs.gopls}";
-            "dlv" = "${lib.getExe pkgs.delve}";
-          };
+          #          "go.alternateTools" = {
+          #            "go" = "${lib.getExe pkgs.go}";
+          #            "gopls" = "${lib.getExe pkgs.gopls}";
+          #            "dlv" = "${lib.getExe pkgs.delve}";
+          #          };
 
           "nix.enableLanguageServer" = true;
           "nix.serverPath" = "nil";
