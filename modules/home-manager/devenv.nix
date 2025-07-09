@@ -41,6 +41,7 @@ in
       [
         pkgs.delve # go debugger
         pkgs.devenv
+        pkgs.bruno
       ]
 
       (lib.mkIf pkgs.stdenv.isLinux [
