@@ -42,6 +42,7 @@ in
         pkgs.delve # go debugger
         pkgs.devenv
         pkgs.bruno
+        pkgs.gemini-cli
       ]
 
       (lib.mkIf pkgs.stdenv.isLinux [
