@@ -121,7 +121,7 @@ in
     masApps = {
       "Final Cut Pro" = 424389933;
       "Compressor" = 424390742;
-      "Luminar Neo" = 1584373150;
+      "Darkroom" = 953286746;
     };
 
     # enforce that no versions are updated automatically
