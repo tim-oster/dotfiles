@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -76,6 +77,18 @@ in
           buffer_font_size = config.stylix.fonts.sizes.terminal * 4.0 / 3.0;
           ui_font_family = config.stylix.fonts.sansSerif.name;
           ui_font_size = config.stylix.fonts.sizes.applications * 4.0 / 3.0;
+
+          lsp = {
+            protobuf-language-server = {
+              binary = {
+                path = "buf"; # prefer binary from direnv path instead of global version
+                arguments = [
+                  "beta"
+                  "lsp"
+                ];
+              };
+            };
+          };
         };
     };
   };
