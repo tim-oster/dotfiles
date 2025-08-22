@@ -122,6 +122,7 @@ in
       "Final Cut Pro" = 424389933;
       "Compressor" = 424390742;
       "Photomator" = 1444636541;
+      "Xcode" = 497799835;
     };
 
     # enforce that no versions are updated automatically
