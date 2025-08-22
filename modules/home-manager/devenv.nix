@@ -43,6 +43,7 @@ in
         pkgs.devenv
         pkgs.bruno
         pkgs.gemini-cli
+        pkgs.claude-code
       ]
 
       (lib.mkIf pkgs.stdenv.isLinux [
