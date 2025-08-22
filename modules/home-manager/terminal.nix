@@ -35,11 +35,22 @@ in
       };
     };
 
+    # https://podman-desktop.io/docs/migrating-from-docker/using-the-docker_host-environment-variables
     programs.fish = {
       enable = true;
-      interactiveShellInit = ''
-        set fish_greeting # Disable greeting
-      '';
+      interactiveShellInit = lib.concatStringsSep "" (
+        [
+          ''
+            set fish_greeting # Disable greeting
+          ''
+        ]
+        ++ lib.optional pkgs.stdenv.isDarwin ''
+          export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
+        ''
+        ++ lib.optional pkgs.stdenv.isLinux ''
+          export DOCKER_HOST="unix://$(podman info --format '{{.Host.RemoteSocket.Path}}')"
+        ''
+      );
     };
 
     programs.fzf.enable = true;
