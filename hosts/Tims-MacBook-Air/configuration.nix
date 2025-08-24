@@ -58,6 +58,7 @@ in
   home-manager = {
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit inputs outputs; };
+    backupFileExtension = "backup";
     users = {
       "${username}" = import ./home.nix;
     };
