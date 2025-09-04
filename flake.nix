@@ -53,6 +53,14 @@
         ];
       };
 
+      nixosConfigurations."nixos-server" = nixpkgs.lib.nixosSystem {
+        pkgs = outputs.legacyPackages.x86_64-linux;
+        specialArgs = { inherit inputs outputs; };
+        modules = [
+          ./hosts/nixos-server/configuration.nix
+        ];
+      };
+
       darwinConfigurations."Tims-MacBook-Air" = nix-darwin.lib.darwinSystem {
         pkgs = outputs.legacyPackages.aarch64-darwin;
         specialArgs = { inherit inputs outputs; };
