@@ -1,6 +1,4 @@
 {
-  pkgs,
-  lib,
   outputs,
   ...
 }:
@@ -13,27 +11,21 @@
     username = "server";
     homeDirectory = "/home/server";
     stateVersion = "24.11";
-
-    packages = with pkgs; [];
   };
 
   custom = {
-# TODO use shared.enable = true; with special server mode
-      stylix.enable = lib.mkDefault true;
-      terminal.enable = lib.mkDefault true;
-      devenv.enable = lib.mkDefault true;
+    stylix.enable = true;
+    terminal.enable = true;
+    devenv.enable = true;
 
-  };
-    programs = {
-      helix = {
-        enable = lib.mkDefault true;
-        defaultEditor = lib.mkDefault true;
-      };
-    
-      git = {
-        enable = true;
-        userName = "tim-oster";
-        userEmail = "tim.oster99@gmail.com";
-      };
+    git = {
+      enable = true;
+      signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H";
     };
+
+    helix = {
+      enable = true;
+      defaultEditor = true;
+    };
+  };
 }

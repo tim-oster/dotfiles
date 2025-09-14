@@ -1,4 +1,9 @@
-{ config, pkgs, inputs, outputs, ... }:
+{
+  pkgs,
+  inputs,
+  outputs,
+  ...
+}:
 
 let
   username = "server";
@@ -20,6 +25,10 @@ in
         "flakes"
       ];
       auto-optimise-store = true;
+      trusted-users = [
+        "root"
+        "github-runner"
+      ];
     };
     gc = {
       automatic = true;
@@ -38,7 +47,8 @@ in
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
     };
-    initrd.luks.devices."luks-1aa6aca7-730a-4858-9cdb-581208c8b2c1".device = "/dev/disk/by-uuid/1aa6aca7-730a-4858-9cdb-581208c8b2c1";
+    initrd.luks.devices."luks-1aa6aca7-730a-4858-9cdb-581208c8b2c1".device =
+      "/dev/disk/by-uuid/1aa6aca7-730a-4858-9cdb-581208c8b2c1";
   };
 
   users.users."${username}" = {
@@ -47,10 +57,28 @@ in
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
+      "podman"
     ];
-    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"
+    ];
     shell = pkgs.fish;
   };
+
+  users.users.github-runner = {
+    isSystemUser = true;
+    home = "/var/lib/github-runner";
+    createHome = true;
+    group = "github-runner";
+    extraGroups = [
+      "nixbld"
+      "podman"
+      "docker"
+    ];
+    shell = pkgs.bashInteractive;
+  };
+  users.groups.github-runner = { };
 
   home-manager = {
     useGlobalPkgs = true;
@@ -84,7 +112,41 @@ in
     };
   };
 
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
+      autoPrune.enable = true;
+    };
+  };
+
   services = {
     openssh.enable = true;
+
+    # if it magically breaks again:
+    # - try debugging with this: dmesg -T | egrep -i 'seccomp|audit.*syscall'
+    # - last resort: install dependencies in nix store "manually" to avoid them being fetched from within the runner
+    github-runners = {
+      neowire-runner1 = {
+        enable = true;
+        name = "runner1";
+        user = "github-runner";
+        tokenFile = "/secrets/gh-runner1-token";
+        url = "https://github.com/neowire-gmbh";
+        extraPackages = with pkgs; [
+          docker
+        ];
+        extraEnvironment = {
+          NIX_PATH = "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos";
+          HOME = "/var/lib/github-runner/neowire-runner1";
+          XDG_CACHE_HOME = "/var/lib/github-runner/neowire-runner1/.cache";
+        };
+        serviceOverrides = {
+          BindPaths = [ "/var/run/docker.sock" ];
+        };
+      };
+    };
   };
 }
