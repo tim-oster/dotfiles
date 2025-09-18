@@ -122,30 +122,40 @@ in
     };
   };
 
-  services = {
-    openssh.enable = true;
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = [
+      "--accept-routes=false"
+      "--advertise-routes=10.0.0.0/16"
+    ];
+    useRoutingFeatures = "both";
+  };
 
-    # if it magically breaks again:
-    # - try debugging with this: dmesg -T | egrep -i 'seccomp|audit.*syscall'
-    # - last resort: install dependencies in nix store "manually" to avoid them being fetched from within the runner
-    github-runners = {
-      neowire-runner1 = {
-        enable = true;
-        name = "runner1";
-        user = "github-runner";
-        tokenFile = "/secrets/gh-runner1-token";
-        url = "https://github.com/neowire-gmbh";
-        extraPackages = with pkgs; [
-          docker
-        ];
-        extraEnvironment = {
-          NIX_PATH = "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos";
-          HOME = "/var/lib/github-runner/neowire-runner1";
-          XDG_CACHE_HOME = "/var/lib/github-runner/neowire-runner1/.cache";
-        };
-        serviceOverrides = {
-          BindPaths = [ "/var/run/docker.sock" ];
-        };
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  # if it magically breaks again:
+  # - try debugging with this: dmesg -T | egrep -i 'seccomp|audit.*syscall'
+  # - last resort: install dependencies in nix store "manually" to avoid them being fetched from within the runner
+  services.github-runners = {
+    neowire-runner1 = {
+      enable = true;
+      name = "runner1";
+      user = "github-runner";
+      tokenFile = "/secrets/gh-runner1-token";
+      url = "https://github.com/neowire-gmbh";
+      extraPackages = with pkgs; [
+        docker
+      ];
+      extraEnvironment = {
+        NIX_PATH = "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos";
+        HOME = "/var/lib/github-runner/neowire-runner1";
+        XDG_CACHE_HOME = "/var/lib/github-runner/neowire-runner1/.cache";
+      };
+      serviceOverrides = {
+        BindPaths = [ "/var/run/docker.sock" ];
       };
     };
   };
