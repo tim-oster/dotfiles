@@ -12,18 +12,22 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+  boot.swraid.enable = true;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/41406216-02a3-42bb-a449-c82720e7c0d4";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."luks-fafb569c-0a09-4773-8391-a947e08db2dd".device = "/dev/disk/by-uuid/fafb569c-0a09-4773-8391-a947e08db2dd";
-
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/81A4-F5AA";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  fileSystems."/mnt/nasdata" =
+    { device = "/dev/md127";
+      fsType = "ext4";
     };
 
   swapDevices =

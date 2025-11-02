@@ -47,8 +47,21 @@ in
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
     };
-    initrd.luks.devices."luks-1aa6aca7-730a-4858-9cdb-581208c8b2c1".device =
-      "/dev/disk/by-uuid/1aa6aca7-730a-4858-9cdb-581208c8b2c1";
+    initrd.luks.devices = {
+      # root partition (nvme1)
+      "luks-fafb569c-0a09-4773-8391-a947e08db2dd".device =
+        "/dev/disk/by-uuid/fafb569c-0a09-4773-8391-a947e08db2dd";
+
+      # swap partition (nvme1)
+      "luks-1aa6aca7-730a-4858-9cdb-581208c8b2c1".device =
+        "/dev/disk/by-uuid/1aa6aca7-730a-4858-9cdb-581208c8b2c1";
+
+      # data raid (nvme0)
+      "nvme0n1_crypt".device = "/dev/disk/by-uuid/ab13146f-d3c6-416f-b986-113e1e3c3170";
+
+      # data raid (nvme2)
+      "nvme2n1_crypt".device = "/dev/disk/by-uuid/58727499-7b80-41e0-9d10-e1b2f81239e1";
+    };
   };
 
   users.users."${username}" = {
