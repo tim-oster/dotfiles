@@ -1,4 +1,5 @@
 {
+  pkgs,
   outputs,
   ...
 }:
@@ -11,6 +12,9 @@
     username = "server";
     homeDirectory = "/home/server";
     stateVersion = "24.11";
+    packages = with pkgs; [
+      tmux
+    ];
   };
 
   custom = {

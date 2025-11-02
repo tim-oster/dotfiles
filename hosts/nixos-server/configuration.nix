@@ -64,34 +64,49 @@ in
     };
   };
 
-  users.users."${username}" = {
-    isNormalUser = true;
-    description = username;
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "docker"
-      "podman"
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"
-    ];
-    shell = pkgs.fish;
+  users.users = {
+    "${username}" = {
+      isNormalUser = true;
+      description = username;
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "docker"
+        "podman"
+      ];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"
+      ];
+      shell = pkgs.fish;
+    };
+
+    github-runner = {
+      isSystemUser = true;
+      home = "/var/lib/github-runner";
+      createHome = true;
+      group = "github-runner";
+      extraGroups = [
+        "nixbld"
+        "podman"
+        "docker"
+      ];
+      shell = pkgs.bashInteractive;
+    };
+
+    nasvault = {
+      isSystemUser = true;
+      description = "User owns vault directory on NAS + facilitates SMB";
+      home = "/var/lib/nasvault";
+      createHome = true;
+      group = "nasvault";
+      shell = pkgs.bashInteractive;
+    };
   };
 
-  users.users.github-runner = {
-    isSystemUser = true;
-    home = "/var/lib/github-runner";
-    createHome = true;
-    group = "github-runner";
-    extraGroups = [
-      "nixbld"
-      "podman"
-      "docker"
-    ];
-    shell = pkgs.bashInteractive;
+  users.groups = {
+    github-runner = { };
+    nasvault = { };
   };
-  users.groups.github-runner = { };
 
   home-manager = {
     useGlobalPkgs = true;
@@ -169,6 +184,36 @@ in
       };
       serviceOverrides = {
         BindPaths = [ "/var/run/docker.sock" ];
+      };
+    };
+  };
+
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    openFirewall = true;
+
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "nasvault";
+        "netbios name" = "nasvault";
+        "security" = "user";
+        "hosts allow" = "10.0. 127.0.0.1 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
+
+      # use `sudo smbpasswd -a nasvault` to configure password
+      nasvault = {
+        "path" = "/mnt/nasdata/vault";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0660";
+        "directory mask" = "0770";
+        "valid users" = "nasvault";
       };
     };
   };
