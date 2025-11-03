@@ -62,6 +62,9 @@ in
       # data raid (nvme2)
       "nvme2n1_crypt".device = "/dev/disk/by-uuid/58727499-7b80-41e0-9d10-e1b2f81239e1";
     };
+    kernel.sysctl = {
+      "net.ipv4.ip_unprivileged_port_start" = 80; # allow podman to expose port 80
+    };
   };
 
   users.users = {
@@ -124,10 +127,12 @@ in
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
+      PODMAN_COMPOSE_WARNING_LOGS = "false"; # supress podman-compose related warning
     };
     systemPackages = with pkgs; [
       neovim
       just
+      podman-compose
     ];
   };
 
@@ -157,6 +162,16 @@ in
       "--advertise-routes=10.0.0.0/16"
     ];
     useRoutingFeatures = "both";
+  };
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      # traefik ports
+      80
+      443
+      # other ports are added via openFirewall options
+    ];
   };
 
   services.openssh = {

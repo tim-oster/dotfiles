@@ -1,0 +1,31 @@
+- name: Home
+  hide-desktop-navigation: true
+  columns:
+    - size: full
+      widgets:
+        - type: server-stats
+          servers:
+            - type: local
+              name: nixos-server
+              hide-mountpoints-by-default: true
+              mountpoints:
+                "/":
+                  hide: false
+                  name: root
+                "/mnt/nasdata":
+                  hide: false
+                  name: nas
+        - type: bookmarks
+          groups:
+            - title: Infra
+              color: 10 70 50
+              links:
+                - title: Traefik
+                  url: https://traefik.server.home/
+                - title: Portainer
+                  url: https://portainer.server.home/
+            - title: Tools
+              color: 200 50 50
+              links:
+                - title: IT-Tools
+                  url: https://ittools.server.home/
