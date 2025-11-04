@@ -16,6 +16,7 @@ in
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.default
       inputs.stylix.nixosModules.stylix
+      inputs.quadlet-nix.nixosModules.quadlet
     ];
 
   nix = {
@@ -81,6 +82,8 @@ in
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"
       ];
       shell = pkgs.fish;
+      linger = true; # required for auto start before user login
+      autoSubUidGidRange = true; # required for rootless container with multiple users
     };
 
     github-runner = {
@@ -146,6 +149,8 @@ in
   };
 
   virtualisation = {
+    quadlet.enable = true;
+
     podman = {
       enable = true;
       dockerCompat = true;
@@ -205,7 +210,6 @@ in
 
   services.samba = {
     enable = true;
-    securityType = "user";
     openFirewall = true;
 
     settings = {

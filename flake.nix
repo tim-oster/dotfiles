@@ -18,6 +18,8 @@
       url = "github:nix-community/stylix?ref=release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
   };
 
   outputs =
