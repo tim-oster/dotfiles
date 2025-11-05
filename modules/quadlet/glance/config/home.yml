@@ -21,11 +21,11 @@
               color: 10 70 50
               links:
                 - title: Traefik
-                  url: https://traefik.server.home/
+                  url: https://traefik-hl.timoster.dev/
                 - title: Portainer
-                  url: https://portainer.server.home/
+                  url: https://portainer-hl.timoster.dev/
             - title: Tools
               color: 200 50 50
               links:
                 - title: IT-Tools
-                  url: https://ittools.server.home/
+                  url: https://ittools-hl.timoster.dev/

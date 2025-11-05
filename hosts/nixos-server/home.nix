@@ -36,7 +36,13 @@
     };
   };
 
-  virtualisation.quadlet.autoEscape = true; # TODO ?
+  virtualisation.quadlet = {
+    autoEscape = true;
+    autoUpdate = {
+      enable = true;
+      calendar = "*-*-* 04:00:00";
+    };
+  };
   virtualisation.quadlet.networks.proxy = {
     networkConfig = {
       name = "proxy";
@@ -45,7 +51,8 @@
   virtualisation.quadlet.containers.traefik = {
     autoStart = true;
     containerConfig = {
-      image = "traefik:latest";
+      image = "docker.io/traefik:latest";
+      autoUpdate = "registry";
       name = "traefik";
       noNewPrivileges = true;
       networks = [ "proxy" ];
@@ -55,9 +62,11 @@
       ];
       volumes = [
         "/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro"
-        "${./docker/traefik/certs}:/certs:ro" # TODO
-        "${./docker/traefik/tls.yaml}:/dynamic/tls.yaml"
+        "traefik_letsencrypt_data:/letsencrypt"
       ];
+      environments = {
+        "CF_DNS_API_TOKEN" = "bX8VtxpApBMmp5KIcA_Vd-cH_ky0xwdbiGsF1lCS";
+      };
       exec = [
         # EntryPoints
         "--entrypoints.http.address=:80"
@@ -66,10 +75,12 @@
         "--entrypoints.http.http.redirections.entrypoint.permanent=true"
         "--entrypoints.https.address=:443"
         "--entrypoints.https.http.tls=true"
+        "--entrypoints.https.http.tls.certresolver=cloudflare"
 
-        # Attach the static configuration tls.yaml file that contains the tls configuration settings
-        "--providers.file.filename=/dynamic/tls.yaml"
-        # TODO https://doc.traefik.io/traefik/setup/docker/#tls-certificate-management-lets-encrypt
+        # letsencrypt
+        "--certificatesresolvers.cloudflare.acme.email=admin@timoster.dev"
+        "--certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+        "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
 
         # Providers
         "--providers.docker=true"
@@ -89,10 +100,12 @@
         "traefik.enable=true"
 
         # Dashboard router
-        "traefik.http.routers.dashboard.rule=Host(`traefik.server.home`)"
+        "traefik.http.routers.dashboard.rule=Host(`traefik-hl.timoster.dev`)"
         "traefik.http.routers.dashboard.entrypoints=https"
-        "traefik.http.routers.dashboard.service=api@internal"
         "traefik.http.routers.dashboard.tls=true"
+        "traefik.http.routers.dashboard.tls.certresolver=cloudflare"
+        "traefik.http.routers.dashboard.tls.domains[0].main=*.timoster.dev"
+        "traefik.http.routers.dashboard.service=api@internal"
 
         # Basic‑auth middleware
         (
@@ -106,24 +119,31 @@
       Restart = "unless-stopped";
     };
   };
+  virtualisation.quadlet.volumes.traefikLetsencryptData = {
+    volumeConfig = {
+      name = "traefik_letsencrypt_data";
+    };
+  };
   virtualisation.quadlet.containers.glance = {
     autoStart = true;
     containerConfig = {
-      image = "glanceapp/glance";
+      image = "docker.io/glanceapp/glance:latest";
       name = "glance";
       noNewPrivileges = true;
       networks = [ "proxy" ];
       volumes = [
-        "${./docker/glance/config}:/app/config:ro"
+        "${./../../modules/quadlet/glance/config}:/app/config:ro"
         "/mnt/nasdata:/mnt/nasdata:ro"
         "/etc/localtime:/etc/localtime:ro"
       ];
       labels = [
         "traefik.enable=true"
         "traefik.docker.network=proxy"
+        "traefik.http.routers.glance.rule=Host(`hl.timoster.dev`)"
         "traefik.http.routers.glance.entrypoints=https"
-        "traefik.http.routers.glance.rule=Host(`start.server.home`)"
         "traefik.http.routers.glance.tls=true"
+        "traefik.http.routers.glance.tls.certresolver=cloudflare"
+        "traefik.http.routers.glance.tls.domains[0].main=*.timoster.dev"
         "traefik.http.routers.glance.service=glance"
         "traefik.http.services.glance.loadbalancer.server.port=8080"
       ];
@@ -135,7 +155,7 @@
   virtualisation.quadlet.containers.ittools = {
     autoStart = true;
     containerConfig = {
-      image = "corentinth/it-tools:latest";
+      image = "docker.io/corentinth/it-tools:latest";
       name = "ittools";
       noNewPrivileges = true;
       networks = [ "proxy" ];
@@ -143,8 +163,10 @@
         "traefik.enable=true"
         "traefik.docker.network=proxy"
         "traefik.http.routers.ittools.entrypoints=https"
-        "traefik.http.routers.ittools.rule=Host(`ittools.server.home`)"
+        "traefik.http.routers.ittools.rule=Host(`ittools-hl.timoster.dev`)"
         "traefik.http.routers.ittools.tls=true"
+        "traefik.http.routers.ittools.tls.certresolver=cloudflare"
+        "traefik.http.routers.ittools.tls.domains[0].main=*.timoster.dev"
         "traefik.http.routers.ittools.service=ittools"
         "traefik.http.services.ittools.loadbalancer.server.port=80"
       ];
@@ -156,7 +178,7 @@
   virtualisation.quadlet.containers.portainer = {
     autoStart = true;
     containerConfig = {
-      image = "portainer/portainer-ce:latest";
+      image = "docker.io/portainer/portainer-ce:latest";
       name = "portainer";
       noNewPrivileges = true;
       networks = [ "proxy" ];
@@ -168,8 +190,10 @@
         "traefik.enable=true"
         "traefik.docker.network=proxy"
         "traefik.http.routers.portainer.entrypoints=https"
-        "traefik.http.routers.portainer.rule=Host(`portainer.server.home`)"
+        "traefik.http.routers.portainer.rule=Host(`portainer-hl.timoster.dev`)"
         "traefik.http.routers.portainer.tls=true"
+        "traefik.http.routers.portainer.tls.certresolver=cloudflare"
+        "traefik.http.routers.portainer.tls.domains[0].main=*.timoster.dev"
         "traefik.http.routers.portainer.service=portainer"
         "traefik.http.services.portainer.loadbalancer.server.port=9000"
       ];
@@ -181,6 +205,51 @@
   virtualisation.quadlet.volumes.portainerData = {
     volumeConfig = {
       name = "portainer_data";
+    };
+  };
+  virtualisation.quadlet.containers.adguard = {
+    autoStart = true;
+    containerConfig = {
+      image = "docker.io/adguard/adguardhome:edge";
+      autoUpdate = "registry";
+      name = "adguard";
+      noNewPrivileges = true;
+      networks = [ "proxy" ];
+      publishPorts = [
+        "53:53/tcp"
+        "53:53/udp"
+        "853:853"
+      ];
+      volumes = [
+        "adguard_conf:/opt/adguardhome/conf"
+        "adguard_work:/opt/adguardhome/work"
+      ];
+      labels = [
+        "traefik.enable=true"
+        "traefik.docker.network=proxy"
+        "traefik.http.routers.adguard.entrypoints=https"
+        "traefik.http.routers.adguard.rule=Host(`adguard-hl.timoster.dev`)"
+        "traefik.http.routers.adguard.tls=true"
+        "traefik.http.routers.adguard.tls.certresolver=cloudflare"
+        "traefik.http.routers.adguard.tls.domains[0].main=*.timoster.dev"
+        "traefik.http.routers.adguard.service=adguard"
+        "traefik.http.services.adguard.loadbalancer.server.port=3000"
+      ];
+    };
+    serviceConfig = {
+      Restart = "unless-stopped";
+    };
+  };
+  virtualisation.quadlet.volumes = {
+    adguardConf = {
+      volumeConfig = {
+        name = "adguard_conf";
+      };
+    };
+    adguardWork = {
+      volumeConfig = {
+        name = "adguard_work";
+      };
     };
   };
 }

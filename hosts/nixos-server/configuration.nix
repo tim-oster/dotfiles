@@ -64,7 +64,7 @@ in
       "nvme2n1_crypt".device = "/dev/disk/by-uuid/58727499-7b80-41e0-9d10-e1b2f81239e1";
     };
     kernel.sysctl = {
-      "net.ipv4.ip_unprivileged_port_start" = 80; # allow podman to expose port 80
+      "net.ipv4.ip_unprivileged_port_start" = 53; # allow podman to expose dns and http/s
     };
   };
 
@@ -173,9 +173,16 @@ in
     enable = true;
     allowedTCPPorts = [
       # traefik ports
-      80
-      443
+      80 # http
+      443 # https
+      # adguard ports
+      53 # dns
+      853 # dns-over-tls
       # other ports are added via openFirewall options
+    ];
+    allowedUDPPorts = [
+      53 # dns
+      853 # dns-over-quic
     ];
   };
 
