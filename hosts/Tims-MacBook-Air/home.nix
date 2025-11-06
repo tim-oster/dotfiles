@@ -107,4 +107,8 @@ in
 
     karabiner-config.enable = true;
   };
+
+  programs.ssh.matchBlocks."server.home" = {
+    forwardAgent = true;
+  };
 }

@@ -26,7 +26,7 @@ in
 
         accordion-padding = 30;
 
-        enable-normalization-flatten-containers = false;
+        enable-normalization-flatten-containers = false; # disable to allow "split" command to work
         enable-normalization-opposite-orientation-for-nested-containers = false;
 
         automatically-unhide-macos-hidden-apps = true;
@@ -60,6 +60,9 @@ in
               '';
             in
             "exec-and-forget ${lib.getExe script}";
+
+          cmd-h = [ ]; # Disable "hide application"
+          cmd-alt-h = [ ]; # Disable "hide others"
 
           ctrl-alt-h = "focus --boundaries-action wrap-around-the-workspace left";
           ctrl-alt-j = "focus --boundaries-action wrap-around-the-workspace down";

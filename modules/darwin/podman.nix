@@ -16,7 +16,15 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = lib.mkMerge [ [ pkgs.podman ] ];
+    environment.systemPackages = lib.mkMerge [
+      [
+        pkgs.podman
+        pkgs.docker-compose
+        (pkgs.writeShellScriptBin "docker" ''
+          podman "$@"
+        '')
+      ]
+    ];
 
     system.activationScripts.extraActivation.text = lib.mkAfter ''
       if [[ $(su -l "${cfg.asUser}" -c "${lib.getExe pkgs.podman} system connection list --format json | jq length") -eq 0 ]]; then

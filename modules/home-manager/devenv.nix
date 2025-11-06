@@ -25,6 +25,10 @@ in
       enable = true;
       options.side-by-side = true;
     };
+    programs.git.extraConfig = {
+      pull.rebase = true;
+      rebase.autoStash = true;
+    };
 
     programs.lazygit = {
       enable = true;
