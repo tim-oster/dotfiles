@@ -16,6 +16,10 @@ in
       type = lib.types.int;
       default = 9;
     };
+    terminalFontSize = lib.mkOption {
+      type = with lib.types; nullOr int;
+      default = null;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -35,7 +39,7 @@ in
           applications = cfg.fontSize;
           desktop = cfg.fontSize;
           popups = cfg.fontSize;
-          terminal = cfg.fontSize;
+          terminal = cfg.terminalFontSize or cfg.fontSize;
         };
 
         monospace = {

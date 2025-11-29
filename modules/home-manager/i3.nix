@@ -37,29 +37,28 @@ in
           )
         ];
 
-        startup =
-          [
-            {
-              command = "i3-msg workspace 1";
-              always = false;
-              notification = false;
-            }
-            {
-              command = "xset r rate 200 40";
-              always = true;
-              notification = false;
-            }
-            {
-              command = "xset -dpms && xset s off"; # disable DPMS and screen blanking
-              always = true;
-              notification = false;
-            }
-          ]
-          ++ (map (cmd: {
-            command = cmd;
+        startup = [
+          {
+            command = "i3-msg workspace 1";
             always = false;
             notification = false;
-          }) cfg.startup);
+          }
+          {
+            command = "xset r rate 200 40";
+            always = true;
+            notification = false;
+          }
+          {
+            command = "xset -dpms && xset s off"; # disable DPMS and screen blanking
+            always = true;
+            notification = false;
+          }
+        ]
+        ++ (map (cmd: {
+          command = cmd;
+          always = false;
+          notification = false;
+        }) cfg.startup);
 
         modes.resize =
           let
@@ -91,6 +90,12 @@ in
             "${modifier}+shift+k" = "move up";
             "${modifier}+shift+l" = "move right";
             "${modifier}+b" = "split horizontal";
+            "XF86AudioMute" = "exec --no-startup-id ${pkgs.alsa-utils}/bin/amixer -q set Master toggle";
+            "XF86AudioLowerVolume" =
+              "exec --no-startup-id ${pkgs.alsa-utils}/bin/amixer -q set Master 5%- unmute";
+            "XF86AudioRaiseVolume" =
+              "exec --no-startup-id ${pkgs.alsa-utils}/bin/amixer -q set Master 5%+ unmute";
+            "XF86AudioMicMute" = "exec --no-startup-id ${pkgs.alsa-utils}/bin/amixer -q set Capture toggle";
           };
       };
     };
@@ -128,19 +133,39 @@ in
           }
           {
             block = "nvidia_gpu";
+            if_command = "type -P nvidia-smi";
           }
           {
             block = "net";
-            device = "enp14s0";
+            device = "^enp.+$";
             format = " ^icon_net_wired $ip ";
             format_alt = " ^icon_net_wired $ipv6 ";
+            missing_format = " ^icon_net_wired × ";
           }
           {
             block = "net";
-            device = "wlp15s0";
+            device = "^wlp.+$";
             format = " ^icon_net_wireless $ip - $ssid ";
             format_alt = " ^icon_net_wireless $ipv6 ";
+            missing_format = " ^icon_net_wireless × ";
           }
+          (
+            let
+              format = " $icon $percentage {$time_remaining.dur(hms:true, min_unit:m) |} ";
+            in
+            {
+              block = "battery";
+              if_command = "ls /sys/class/power_supply/ | grep -q \"^BAT\"";
+              format = format;
+              full_format = format;
+              charging_format = format;
+              empty_format = format;
+              not_charging_format = format;
+              info = 40;
+              good = 40;
+              warning = 30;
+            }
+          )
           {
             block = "sound";
             click = [

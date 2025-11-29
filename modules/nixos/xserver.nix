@@ -22,7 +22,8 @@ in
       default = false;
     };
     videoDriver = lib.mkOption {
-      type = lib.types.str;
+      type = with lib.types; nullOr str;
+      default = null;
     };
     autoLoginUser = lib.mkOption {
       type = with lib.types; nullOr str;
@@ -37,7 +38,7 @@ in
       windowManager.i3.enable = true;
       windowManager.i3.extraPackages = [ ];
 
-      videoDrivers = [ cfg.videoDriver ];
+      videoDrivers = lib.mkIf (cfg.videoDriver != null) [ cfg.videoDriver ];
 
       resolutions = [
         {
@@ -58,42 +59,41 @@ in
         greeters.mini = {
           enable = true;
           user = "tim";
-          extraConfig =
-            ''
-              [greeter]
-              show-password-label = true
-              password-label-text = Password
-              invalid-password-text = Access Denied
-              show-input-cursor = false
-              password-alignment = left
-              password-input-width = 40
-            ''
-            + (
-              if cfg.useStylix then
-                ''
-                  [greeter-theme]
-                  font = Sans
-                  font-size = 1em
-                  font-weight = normal
-                  font-style = normal
-                  background-image = ""
-                  password-border-width = 0
-                  password-border-radius = 0
+          extraConfig = ''
+            [greeter]
+            show-password-label = true
+            password-label-text = Password
+            invalid-password-text = Access Denied
+            show-input-cursor = false
+            password-alignment = left
+            password-input-width = 40
+          ''
+          + (
+            if cfg.useStylix then
+              ''
+                [greeter-theme]
+                font = Sans
+                font-size = 1em
+                font-weight = normal
+                font-style = normal
+                background-image = ""
+                password-border-width = 0
+                password-border-radius = 0
 
-                  background-color = #${config.lib.stylix.colors.base00}
-                  text-color = #${config.lib.stylix.colors.base06}
-                  error-color = #${config.lib.stylix.colors.base08}
-                  window-color = #${config.lib.stylix.colors.base02}
-                  border-color = #${config.lib.stylix.colors.base02}
-                  border-width = 0px
+                background-color = #${config.lib.stylix.colors.base00}
+                text-color = #${config.lib.stylix.colors.base06}
+                error-color = #${config.lib.stylix.colors.base08}
+                window-color = #${config.lib.stylix.colors.base02}
+                border-color = #${config.lib.stylix.colors.base02}
+                border-width = 0px
 
-                  password-color = #${config.lib.stylix.colors.base06}
-                  password-background-color = #${config.lib.stylix.colors.base03}
-                  password-border-color = #${config.lib.stylix.colors.base03}
-                ''
-              else
-                ""
-            );
+                password-color = #${config.lib.stylix.colors.base06}
+                password-background-color = #${config.lib.stylix.colors.base03}
+                password-border-color = #${config.lib.stylix.colors.base03}
+              ''
+            else
+              ""
+          );
         };
       };
     };

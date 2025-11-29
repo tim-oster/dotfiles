@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     home-manager = {
       url = "github:nix-community/home-manager?ref=release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,6 +28,7 @@
     {
       self,
       nixpkgs,
+      nixos-hardware,
       nix-darwin,
       ...
     }@inputs:
@@ -52,6 +55,15 @@
         specialArgs = { inherit inputs outputs; };
         modules = [
           ./hosts/nixos-workstation/configuration.nix
+        ];
+      };
+
+      nixosConfigurations."nixos-laptop" = nixpkgs.lib.nixosSystem {
+        pkgs = outputs.legacyPackages.x86_64-linux;
+        specialArgs = { inherit inputs outputs; };
+        modules = [
+          ./hosts/nixos-laptop/configuration.nix
+          nixos-hardware.nixosModules.lenovo-thinkpad-t480s
         ];
       };
 
