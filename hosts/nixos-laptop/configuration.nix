@@ -169,6 +169,42 @@ in
       lidSwitch = "suspend-then-hibernate";
       lidSwitchExternalPower = "suspend-then-hibernate";
     };
+
+    # home row mods
+    kmonad = {
+      enable = false;
+      keyboards."laptop-internal" = {
+        device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
+        defcfg = {
+          enable = true;
+          fallthrough = true;
+          allowCommands = false;
+        };
+        config = ''
+          (defsrc
+            z y
+            caps a s d f j k l ;
+          )
+
+          (defalias
+            homerow_a (tap-hold-next 200 a lctl)
+            homerow_s (tap-hold-next 200 s lalt)
+            homerow_d (tap-hold-next 200 d lmet)
+            homerow_f (tap-hold-next 200 f lsft)
+
+            homerow_j (multi-tap 200 (tap-hold-next 200 j rsft) j)
+            homerow_k (tap-hold-next 200 k rmet)
+            homerow_l (tap-hold-next 200 l lalt)
+            homerow_; (tap-hold-next 200 ; rctl)
+          )
+
+          (deflayer homerowmods
+            y z
+            tab @homerow_a @homerow_s @homerow_d @homerow_f @homerow_j @homerow_k @homerow_l @homerow_;
+          )
+        '';
+      };
+    };
   };
 
   # configure hibernation deplay after suspension
