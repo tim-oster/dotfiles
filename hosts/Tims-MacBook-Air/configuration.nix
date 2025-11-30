@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-unstable,
   lib,
   inputs,
   outputs,
@@ -57,7 +58,7 @@ in
 
   home-manager = {
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit inputs outputs; };
+    extraSpecialArgs = { inherit inputs outputs pkgs-unstable; };
     backupFileExtension = "backup";
     users = {
       "${username}" = import ./home.nix;

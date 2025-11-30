@@ -39,7 +39,7 @@ in
           applications = cfg.fontSize;
           desktop = cfg.fontSize;
           popups = cfg.fontSize;
-          terminal = cfg.terminalFontSize or cfg.fontSize;
+          terminal = if cfg.terminalFontSize != null then cfg.terminalFontSize else cfg.fontSize;
         };
 
         monospace = {
