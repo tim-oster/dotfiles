@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  pkgs-unstable,
   config,
   ...
 }:
@@ -47,7 +48,7 @@ in
         pkgs.devenv
         pkgs.bruno
         pkgs.gemini-cli
-        pkgs.claude-code
+        pkgs-unstable.claude-code
         pkgs.jetbrains.datagrip
       ]
 

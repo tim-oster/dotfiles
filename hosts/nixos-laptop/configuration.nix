@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  pkgs-unstable,
   inputs,
   outputs,
   ...
@@ -73,7 +74,7 @@ in
 
   home-manager = {
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit inputs outputs; };
+    extraSpecialArgs = { inherit inputs outputs pkgs-unstable; };
     users = {
       "${username}" = import ./home.nix;
     };
