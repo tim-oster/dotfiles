@@ -1,5 +1,5 @@
 {
-  config,
+  lib,
   pkgs,
   inputs,
   outputs,
@@ -91,6 +91,12 @@ in
       enable = true;
       brightnessKeys.enable = true;
     };
+
+    # ensure suspend and hibernation lock the screen
+    xss-lock = {
+      enable = true;
+      lockerCommand = "${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
+    };
   };
 
   environment = {
@@ -144,7 +150,20 @@ in
       alsa.support32Bit = true;
       pulse.enable = true;
     };
+
+    # handle powerbutton and lid close events
+    logind = {
+      powerKey = "suspend-then-hibernate";
+      powerKeyLongPress = "poweroff";
+      lidSwitch = "suspend-then-hibernate";
+      lidSwitchExternalPower = "suspend-then-hibernate";
+    };
   };
+
+  # configure hibernation deplay after suspension
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=30m
+  '';
 
   security = {
     rtkit.enable = true;
