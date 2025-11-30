@@ -25,6 +25,7 @@
     shared.enable = true;
     wifimenu.enable = true;
     vscode.enable = true;
+    cursor.enable = true;
 
     redshift = {
       enable = true;

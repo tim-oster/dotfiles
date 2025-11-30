@@ -63,6 +63,7 @@ in
       "networkmanager"
       "wheel"
       "video" # required to control display brightness
+      "podman"
     ];
     shell = pkgs.fish;
   };
@@ -96,6 +97,16 @@ in
     xss-lock = {
       enable = true;
       lockerCommand = "${lib.getExe pkgs.i3lock-fancy-rapid} 5 5";
+    };
+  };
+
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
+      autoPrune.enable = true;
     };
   };
 

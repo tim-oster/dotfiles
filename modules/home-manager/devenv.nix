@@ -44,6 +44,7 @@ in
         pkgs.bruno
         pkgs.gemini-cli
         pkgs.claude-code
+        pkgs.jetbrains.datagrip
       ]
 
       (lib.mkIf pkgs.stdenv.isLinux [
