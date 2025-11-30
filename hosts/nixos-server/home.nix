@@ -252,4 +252,44 @@
       };
     };
   };
+  virtualisation.quadlet.containers.backrest = {
+    autoStart = true;
+    containerConfig = {
+      image = "docker.io/garethgeorge/backrest:latest";
+      autoUpdate = null; # never auto update
+      name = "backrest";
+      noNewPrivileges = true;
+      networks = [ "proxy" ];
+      addGroups = [ "keep-groups" ]; # ensures that nasvault membership is propagated into container
+      environments = {
+        "BACKREST_DATA" = "/mnt/data";
+        "BACKREST_CONFIG" = "/mnt/config/config.json";
+      };
+      volumes = [
+        "backrest:/mnt"
+        "/mnt/nasdata:/backup-volumes/nasdata:ro"
+      ];
+      labels = [
+        "traefik.enable=true"
+        "traefik.docker.network=proxy"
+        "traefik.http.routers.backrest.entrypoints=https"
+        "traefik.http.routers.backrest.rule=Host(`backrest-hl.timoster.dev`)"
+        "traefik.http.routers.backrest.tls=true"
+        "traefik.http.routers.backrest.tls.certresolver=cloudflare"
+        "traefik.http.routers.backrest.tls.domains[0].main=*.timoster.dev"
+        "traefik.http.routers.backrest.service=backrest"
+        "traefik.http.services.backrest.loadbalancer.server.port=9898"
+      ];
+    };
+    serviceConfig = {
+      Restart = "unless-stopped";
+    };
+  };
+  virtualisation.quadlet.volumes = {
+    backrest = {
+      volumeConfig = {
+        name = "backrest";
+      };
+    };
+  };
 }

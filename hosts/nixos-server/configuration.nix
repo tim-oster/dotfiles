@@ -78,6 +78,7 @@ in
         "wheel"
         "docker"
         "podman"
+        "nasvault" # grants ro access to nasdata
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"
