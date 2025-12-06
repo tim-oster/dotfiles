@@ -159,6 +159,9 @@ in
     blueman.enable = true;
     pulseaudio.enable = false;
 
+    tailscale.enable = true;
+    mullvad-vpn.enable = true;
+
     pipewire = {
       enable = true;
       alsa.enable = true;
