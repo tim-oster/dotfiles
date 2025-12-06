@@ -11,13 +11,18 @@ in
 
   options.custom.locale = {
     enable = lib.mkEnableOption "locale settings";
+    autoTimezone = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf cfg.enable {
     services.xserver.xkb.layout = "de";
     console.keyMap = "de";
 
-    time.timeZone = "Europe/Berlin";
+    time.timeZone = lib.mkDefault "Europe/Berlin";
+    services.automatic-timezoned.enable = cfg.autoTimezone;
 
     i18n =
       let

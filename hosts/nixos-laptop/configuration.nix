@@ -124,7 +124,10 @@ in
   };
 
   custom = {
-    locale.enable = true;
+    locale = {
+      enable = true;
+      autoTimezone = true;
+    };
 
     xserver = {
       enable = true;
