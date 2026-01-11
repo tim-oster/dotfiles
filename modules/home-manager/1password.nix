@@ -12,11 +12,6 @@ in
 
   options.custom._1password = {
     enable = lib.mkEnableOption "1password config";
-    gpgSigningKey = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      description = "Key to sign git commits with";
-      default = null;
-    };
   };
 
   config = lib.mkIf cfg.enable (
@@ -41,21 +36,6 @@ in
           );
         };
       }
-
-      (lib.mkIf (cfg.gpgSigningKey != null) {
-        programs.git.extraConfig =
-          {
-            gpg.format = "ssh";
-            commit.gpgsign = true;
-            user.signingkey = cfg.gpgSigningKey;
-          }
-          // lib.optionalAttrs pkgs.stdenv.isLinux {
-            "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-          }
-          // lib.optionalAttrs pkgs.stdenv.isDarwin {
-            "gpg \"ssh\"".program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
-          };
-      })
     ]
   );
 }

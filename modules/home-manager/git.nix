@@ -48,8 +48,11 @@ in
         commit.gpgsign = true;
         user.signingkey = cfg.signingKey;
       }
-      // lib.optionalAttrs cfg.useOPSSHSign {
+      // lib.optionalAttrs (cfg.useOPSSHSign && pkgs.stdenv.hostPlatform.isLinux) {
         "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+      }
+      // lib.optionalAttrs (cfg.useOPSSHSign && pkgs.stdenv.hostPlatform.isDarwin) {
+        "gpg \"ssh\"".program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
       };
     };
   };

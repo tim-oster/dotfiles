@@ -54,7 +54,6 @@ in
 
         _1password = {
           enable = lib.mkDefault true;
-          gpgSigningKey = lib.mkDefault signingKey;
         };
       };
   };
