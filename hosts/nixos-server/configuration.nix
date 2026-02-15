@@ -79,6 +79,7 @@ in
         "docker"
         "podman"
         "nasvault" # grants ro access to nasdata
+        "paperless"
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"
@@ -107,6 +108,25 @@ in
       home = "/var/lib/nasvault";
       createHome = true;
       group = "nasvault";
+      extraGroups = [ "paperless" ];
+      shell = pkgs.bashInteractive;
+    };
+
+    brother-scanner = {
+      isSystemUser = true;
+      description = "User owns /paperless/consume directory on NAS";
+      home = "/var/lib/brother-scanner";
+      createHome = true;
+      group = "brother-scanner";
+      shell = pkgs.bashInteractive;
+    };
+
+    paperless = {
+      isSystemUser = true;
+      description = "User owns /paperless on NAS";
+      home = "/var/lib/paperless";
+      createHome = true;
+      group = "paperless";
       shell = pkgs.bashInteractive;
     };
   };
@@ -114,6 +134,8 @@ in
   users.groups = {
     github-runner = { };
     nasvault = { };
+    brother-scanner = { };
+    paperless = { };
   };
 
   home-manager = {
@@ -242,6 +264,17 @@ in
         "create mask" = "0660";
         "directory mask" = "0770";
         "valid users" = "nasvault";
+      };
+
+      # use `sudo smbpasswd -a brother-scanner` to configure password
+      brother-scanner = {
+        "path" = "/mnt/nasdata/paperless/consume";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0660";
+        "directory mask" = "0770";
+        "valid users" = "brother-scanner nasvault";
       };
     };
   };
