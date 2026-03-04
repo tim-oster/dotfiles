@@ -90,7 +90,6 @@ in
     stateVersion = "24.11";
 
     packages = with pkgs; [
-      gimp
       # walkingpadController # TODO
       choose-gui
     ];

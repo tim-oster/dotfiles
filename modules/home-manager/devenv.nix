@@ -22,13 +22,14 @@ in
       nix-direnv.enable = true;
     };
 
-    programs.git.delta = {
+    programs.delta = {
       enable = true;
       options.side-by-side = true;
     };
-    programs.git.extraConfig = {
+    programs.git.settings = {
       pull.rebase = true;
       rebase.autoStash = true;
+      fetch.prune = true;
     };
 
     programs.lazygit = {

@@ -36,17 +36,19 @@ in
 
     programs.git = {
       enable = true;
-      userName = cfg.userName;
-      userEmail = cfg.userEmail;
       ignores = [
         "/.direnv*"
         "/.devenv*"
       ];
-      extraConfig = {
+      settings = {
+        user = {
+          name = cfg.userName;
+          email = cfg.userEmail;
+          signingkey = cfg.signingKey;
+        };
         gpg.format = "ssh";
         gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
         commit.gpgsign = true;
-        user.signingkey = cfg.signingKey;
       }
       // lib.optionalAttrs (cfg.useOPSSHSign && pkgs.stdenv.hostPlatform.isLinux) {
         "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
