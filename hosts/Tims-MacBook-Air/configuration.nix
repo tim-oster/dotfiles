@@ -99,7 +99,7 @@ in
       enable = true;
       dock-apps = [
         "/System/Applications/Launchpad.app"
-        "${pkgs.google-chrome}/Applications/Google Chrome.app"
+        "/Applications/Google Chrome.app"
         "${pkgs.alacritty}/Applications/Alacritty.app"
         "${pkgs.obsidian}/Applications/Obsidian.app"
         "/System/Applications/System Settings.app"

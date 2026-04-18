@@ -110,4 +110,8 @@ in
   programs.ssh.matchBlocks."server.home" = {
     forwardAgent = true;
   };
+
+  programs.ssh.matchBlocks."nixos-server" = {
+    forwardAgent = true;
+  };
 }

@@ -50,7 +50,7 @@ in
 
         cursor.enable = lib.mkDefault false;
         vscode.enable = lib.mkDefault false;
-        zed.enable = lib.mkDefault true;
+        zed.enable = lib.mkDefault false;
 
         _1password = {
           enable = lib.mkDefault true;

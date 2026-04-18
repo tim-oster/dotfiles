@@ -47,10 +47,10 @@ in
       [
         pkgs.delve # go debugger
         pkgs.devenv
-        pkgs.bruno
-        pkgs.gemini-cli
+        pkgs-unstable.bruno
+        pkgs-unstable.gemini-cli
         pkgs-unstable.claude-code
-        pkgs.jetbrains.datagrip
+        #pkgs.jetbrains.datagrip
       ]
 
       (lib.mkIf pkgs.stdenv.isLinux [
