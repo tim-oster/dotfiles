@@ -12,6 +12,10 @@ in
 
   options.custom.terminal = {
     enable = lib.mkEnableOption "terminal config";
+    podmanSupport = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -44,10 +48,10 @@ in
             set fish_greeting # Disable greeting
           ''
         ]
-        ++ lib.optional (pkgs.stdenv.isDarwin && config.services.podman.enable) ''
+        ++ lib.optional (pkgs.stdenv.isDarwin && cfg.podmanSupport) ''
           export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
         ''
-        ++ lib.optional (pkgs.stdenv.isLinux && config.services.podman.enable) ''
+        ++ lib.optional (pkgs.stdenv.isLinux && cfg.podmanSupport) ''
           export DOCKER_HOST="unix://$(podman info --format '{{.Host.RemoteSocket.Path}}')"
         ''
       );

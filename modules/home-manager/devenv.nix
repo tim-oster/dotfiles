@@ -49,7 +49,7 @@ in
         pkgs.devenv
         pkgs-unstable.bruno
         pkgs-unstable.gemini-cli
-        pkgs-unstable.claude-code
+        #pkgs-unstable.claude-code
         #pkgs.jetbrains.datagrip
       ]
 

@@ -98,7 +98,6 @@ in
     macos-defaults = {
       enable = true;
       dock-apps = [
-        "/System/Applications/Launchpad.app"
         "/Applications/Google Chrome.app"
         "${pkgs.alacritty}/Applications/Alacritty.app"
         "${pkgs.obsidian}/Applications/Obsidian.app"

@@ -17,7 +17,6 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = lib.mkMerge [
       [
-        pkgs.google-chrome
         pkgs.obsidian
         pkgs.neofetch
       ]
