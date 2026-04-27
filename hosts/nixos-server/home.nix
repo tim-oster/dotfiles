@@ -64,9 +64,10 @@
         "/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro"
         "traefik_letsencrypt_data:/letsencrypt"
       ];
-      environments = {
-        "CF_DNS_API_TOKEN" = "bX8VtxpApBMmp5KIcA_Vd-cH_ky0xwdbiGsF1lCS";
-      };
+      environmentFiles = [
+        # must contain CF_DNS_API_TOKEN and be owned by server user
+        "/secrets/quadlet-traefik"
+      ];
       exec = [
         # EntryPoints
         "--entrypoints.http.address=:80"
@@ -110,7 +111,7 @@
         # Basic‑auth middleware
         (
           "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:"
-          + ''$$apr1$$XPRzG6ZB$$b/tM0mp97kAknrE1JBUvq1''
+          + "$$apr1$$XPRzG6ZB$$b/tM0mp97kAknrE1JBUvq1"
         )
         "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
       ];
