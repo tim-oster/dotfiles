@@ -46,7 +46,6 @@ in
     home.packages = lib.mkMerge [
       [
         pkgs.delve # go debugger
-        pkgs.devenv
         pkgs-unstable.bruno
         pkgs-unstable.gemini-cli
         #pkgs-unstable.claude-code

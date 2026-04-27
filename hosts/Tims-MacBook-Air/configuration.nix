@@ -31,11 +31,6 @@ in
       automatic = true;
       options = "--delete-older-than 1w";
     };
-    # needed for devenv
-    extraOptions = ''
-      extra-substituters = https://devenv.cachix.org
-      extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
-    '';
   };
 
   nixpkgs.hostPlatform = "aarch64-darwin";
@@ -116,7 +111,6 @@ in
     casks = [
       "1password"
       "1password-cli"
-      "karabiner-elements"
     ];
     taps = [ ];
     masApps = {
