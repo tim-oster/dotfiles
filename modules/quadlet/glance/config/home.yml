@@ -24,8 +24,14 @@
                   url: https://traefik-hl.timoster.dev/
                 - title: Portainer
                   url: https://portainer-hl.timoster.dev/
+                - title: Adguard
+                  url: https://adguard-hl.timoster.dev/
+                - title: Backrest
+                  url: https://backrest-hl.timoster.dev/
             - title: Tools
               color: 200 50 50
               links:
                 - title: IT-Tools
                   url: https://ittools-hl.timoster.dev/
+                - title: Paperless
+                  url: https://paperless-hl.timoster.dev/

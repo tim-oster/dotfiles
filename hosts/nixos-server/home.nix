@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   outputs,
+  config,
   ...
 }:
 {
@@ -293,4 +294,84 @@
       };
     };
   };
+
+  virtualisation.quadlet.pods.paperless = {
+    podConfig = {
+      name = "paperless";
+      networks = [ "proxy" ];
+      userns = "keep-id"; # map host user directly into the pod's infra container
+      labels = [
+        "traefik.enable=true"
+        "traefik.docker.network=proxy"
+        "traefik.http.routers.paperless.entrypoints=https"
+        "traefik.http.routers.paperless.rule=Host(`paperless-hl.timoster.dev`)"
+        "traefik.http.routers.paperless.tls=true"
+        "traefik.http.routers.paperless.tls.certresolver=cloudflare"
+        "traefik.http.routers.paperless.tls.domains[0].main=*.timoster.dev"
+        "traefik.http.routers.paperless.service=paperless"
+        "traefik.http.services.paperless.loadbalancer.server.port=8000"
+      ];
+    };
+  };
+  virtualisation.quadlet.containers.paperlessRedis =
+    let
+      inherit (config.virtualisation.quadlet) pods;
+    in
+    {
+      autoStart = true;
+      containerConfig = {
+        pod = pods.paperless.ref;
+        image = "docker.io/library/redis:8";
+        name = "paperless-redis";
+        noNewPrivileges = true;
+        volumes = [
+          "paperless-redis:/data:U"
+        ];
+      };
+      serviceConfig = {
+        Restart = "unless-stopped";
+      };
+    };
+  virtualisation.quadlet.volumes = {
+    paperlessRedis = {
+      volumeConfig = {
+        name = "paperless-redis";
+      };
+    };
+  };
+  virtualisation.quadlet.containers.paperlessServer =
+    let
+      inherit (config.virtualisation.quadlet) pods;
+    in
+    {
+      autoStart = true;
+      containerConfig = {
+        pod = pods.paperless.ref;
+        image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
+        name = "paperless-server";
+        noNewPrivileges = true;
+        addGroups = [ "keep-groups" ]; # inherit host groups for NAS access
+        user = "1000:100"; # start as the mapped host user to bypass the chown script
+        environments = {
+          "PAPERLESS_REDIS" = "redis://127.0.0.1:6379";
+          "PAPERLESS_URL" = "https://paperless-hl.timoster.dev";
+          "PAPERLESS_TIME_ZONE" = "Europe/Berlin";
+          "PAPERLESS_OCR_LANGUAGE" = "deu";
+        };
+        volumes = [
+          # mount the ephemeral runtime folders
+          "%t/paperless-run:/run"
+          "%t/paperless-tmp:/tmp"
+          # mount the persistent data folders
+          "/mnt/nasdata/paperless/data:/usr/src/paperless/data"
+          "/mnt/nasdata/paperless/media:/usr/src/paperless/media"
+          "/mnt/nasdata/paperless/export:/usr/src/paperless/export"
+          "/mnt/nasdata/paperless/consume:/usr/src/paperless/consume"
+        ];
+      };
+      serviceConfig = {
+        Restart = "unless-stopped";
+        RuntimeDirectory = "paperless-run paperless-tmp"; # tell systemd to create the %t folders before starting
+      };
+    };
 }
