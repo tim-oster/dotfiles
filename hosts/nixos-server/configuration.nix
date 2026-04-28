@@ -229,12 +229,18 @@ in
         docker
       ];
       extraEnvironment = {
+        DOCKER_HOST = "unix:///run/user/1000/podman/podman.sock";
         NIX_PATH = "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos";
         HOME = "/var/lib/github-runner/neowire-runner1";
         XDG_CACHE_HOME = "/var/lib/github-runner/neowire-runner1/.cache";
       };
       serviceOverrides = {
-        BindPaths = [ "/var/run/docker.sock" ];
+        ProtectControlGroups = false;
+        ProtectKernelTunables = false;
+        ProtectSystem = "full";
+
+        BindPaths = [ "/run/user/1000/podman/podman.sock:/var/run/docker.sock" ];
+        User = "github-runner";
       };
     };
   };
