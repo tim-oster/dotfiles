@@ -35,3 +35,5 @@
                   url: https://ittools-hl.timoster.dev/
                 - title: Paperless
                   url: https://paperless-hl.timoster.dev/
+                - title: Home Assistant
+                  url: http://homeassistant.local:8123/

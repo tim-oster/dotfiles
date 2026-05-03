@@ -18,6 +18,7 @@ in
       inputs.home-manager.nixosModules.default
       inputs.stylix.nixosModules.stylix
       inputs.quadlet-nix.nixosModules.quadlet
+      inputs.nixvirt.nixosModules.default
     ];
 
   nix = {
@@ -282,6 +283,148 @@ in
         "directory mask" = "0770";
         "valid users" = "brother-scanner nasvault";
       };
+    };
+  };
+
+  # add bridge network for libvirt
+  networking = {
+    interfaces.enp5s0f1np1.useDHCP = false;
+    bridges."br0".interfaces = [ "enp5s0f1np1" ];
+    interfaces.br0 = {
+      useDHCP = true;
+      macAddress = "38:05:25:33:0a:df";
+    };
+  };
+
+  virtualisation.libvirtd = {
+    enable = true;
+  };
+
+  virtualisation.libvirt = {
+    enable = true;
+    connections."qemu:///system" = {
+      domains = [
+        {
+          definition =
+            let
+              baseDomain = inputs.nixvirt.lib.domain.templates.linux {
+                name = "haos";
+                uuid = "639eca33-e0b8-4b3d-9abb-c58510178ca4";
+                memory = {
+                  count = 4;
+                  unit = "GiB";
+                };
+                vcpu = {
+                  count = 2;
+                };
+              };
+            in
+            inputs.nixvirt.lib.domain.writeXML (
+              baseDomain
+              // {
+                os = {
+                  type = "hvm";
+                  arch = "x86_64";
+                  machine = "q35";
+                  firmware = "efi";
+                };
+
+                cpu = {
+                  mode = "host-passthrough";
+                  check = "none";
+                  migratable = true;
+                };
+
+                features = (baseDomain.features or { }) // {
+                  acpi = { };
+                  apic = { };
+                  smm = {
+                    state = "on";
+                  };
+                };
+
+                devices = baseDomain.devices // {
+                  graphics = [
+                    {
+                      type = "vnc";
+                      autoport = true;
+                    }
+                  ];
+                  video = [
+                    {
+                      model = {
+                        type = "qxl";
+                      };
+                    }
+                  ];
+
+                  channel = [
+                    {
+                      type = "unix";
+                      target = {
+                        type = "virtio";
+                        name = "org.qemu.guest_agent.0";
+                      };
+                    }
+                  ];
+                  redirdev = [ ];
+                  audio = [ ];
+                  sound = [ ];
+
+                  serial = [
+                    {
+                      type = "pty";
+                      target = {
+                        port = 0;
+                      };
+                    }
+                  ];
+                  console = [
+                    {
+                      type = "pty";
+                      target = {
+                        type = "serial";
+                        port = 0;
+                      };
+                    }
+                  ];
+
+                  disk = [
+                    {
+                      type = "file";
+                      device = "disk";
+                      driver = {
+                        name = "qemu";
+                        type = "qcow2";
+                      };
+                      source = {
+                        file = "/home/server/vmimages/haos_ova-17.2.qcow2";
+                      };
+                      target = {
+                        dev = "vda";
+                        bus = "virtio";
+                      };
+                      boot = {
+                        order = 1;
+                      };
+                    }
+                  ];
+                  interface = [
+                    {
+                      type = "bridge";
+                      source = {
+                        bridge = "br0";
+                      };
+                      model = {
+                        type = "virtio";
+                      };
+                    }
+                  ];
+                };
+              }
+            );
+        }
+      ];
     };
   };
 }
