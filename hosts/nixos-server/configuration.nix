@@ -81,6 +81,7 @@ in
         "podman"
         "nasvault" # grants ro access to nasdata
         "paperless"
+        "homeassistant"
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKq7+ma3TZvgZvpanpcJc16sU0entTACR6+F+bdFc+H workstation"
@@ -109,7 +110,10 @@ in
       home = "/var/lib/nasvault";
       createHome = true;
       group = "nasvault";
-      extraGroups = [ "paperless" ];
+      extraGroups = [
+        "paperless"
+        "homeassistant"
+      ];
       shell = pkgs.bashInteractive;
     };
 
@@ -130,6 +134,15 @@ in
       group = "paperless";
       shell = pkgs.bashInteractive;
     };
+
+    homeassistant = {
+      isSystemUser = true;
+      description = "User owns /homeassistant on NAS";
+      home = "/var/lib/homeassistant";
+      createHome = true;
+      group = "homeassistant";
+      shell = pkgs.bashInteractive;
+    };
   };
 
   users.groups = {
@@ -137,6 +150,7 @@ in
     nasvault = { };
     brother-scanner = { };
     paperless = { };
+    homeassistant = { };
   };
 
   home-manager = {
@@ -282,6 +296,17 @@ in
         "create mask" = "0660";
         "directory mask" = "0770";
         "valid users" = "brother-scanner nasvault";
+      };
+
+      # use `sudo smbpasswd -a homeassistant` to configure password
+      homeassistant = {
+        "path" = "/mnt/nasdata/homeassistant";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0660";
+        "directory mask" = "0770";
+        "valid users" = "homeassistant";
       };
     };
   };
