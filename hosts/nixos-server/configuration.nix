@@ -330,6 +330,7 @@ in
     connections."qemu:///system" = {
       domains = [
         {
+          active = true;
           definition =
             let
               baseDomain = inputs.nixvirt.lib.domain.templates.linux {
