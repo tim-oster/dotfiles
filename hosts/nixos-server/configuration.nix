@@ -304,7 +304,7 @@ in
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "create mask" = "0660";
+        "create mask" = "0666"; # easy workaround to ensure that paperless can read & delete files as well as other
         "directory mask" = "0770";
         "valid users" = "homeassistant";
       };
