@@ -23,11 +23,11 @@
     karabiner-config.enable = true;
   };
 
-  programs.ssh.matchBlocks."server.home" = {
+  programs.ssh.settings."server.home" = {
     forwardAgent = true;
   };
 
-  programs.ssh.matchBlocks."nixos-server" = {
+  programs.ssh.settings."nixos-server" = {
     forwardAgent = true;
   };
 }

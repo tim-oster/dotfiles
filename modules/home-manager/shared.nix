@@ -18,13 +18,17 @@ in
     home.packages = lib.mkMerge [
       [
         pkgs.obsidian
-        pkgs.neofetch
+        pkgs.fastfetch
       ]
     ];
 
     programs = {
       # apply stylix to neovim as well
-      neovim.enable = true;
+      neovim = {
+        enable = true;
+        withRuby = false;
+        withPython3 = false;
+      };
     };
 
     custom =

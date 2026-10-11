@@ -61,7 +61,7 @@ in
             language-servers = [ "nil" ];
             auto-format = true;
             formatter = {
-              command = (lib.getExe pkgs.nixfmt-rfc-style);
+              command = (lib.getExe pkgs.nixfmt);
             };
           }
           {
@@ -77,7 +77,7 @@ in
             name = "html";
             auto-format = false;
             formatter = {
-              command = (lib.getExe pkgs.nodePackages.prettier);
+              command = (lib.getExe pkgs.prettier);
               args = [
                 "--parser"
                 "html"
@@ -88,7 +88,7 @@ in
             name = "json";
             auto-format = false;
             formatter = {
-              command = (lib.getExe pkgs.nodePackages.prettier);
+              command = (lib.getExe pkgs.prettier);
               args = [
                 "--parser"
                 "json"
@@ -99,7 +99,7 @@ in
             name = "css";
             auto-format = true;
             formatter = {
-              command = (lib.getExe pkgs.nodePackages.prettier);
+              command = (lib.getExe pkgs.prettier);
               args = [
                 "--parser"
                 "css"
@@ -110,7 +110,7 @@ in
             name = "javascript";
             auto-format = true;
             formatter = {
-              command = (lib.getExe pkgs.nodePackages.prettier);
+              command = (lib.getExe pkgs.prettier);
               args = [
                 "--parser"
                 "typescript"
@@ -121,7 +121,7 @@ in
             name = "typescript";
             auto-format = true;
             formatter = {
-              command = (lib.getExe pkgs.nodePackages.prettier);
+              command = (lib.getExe pkgs.prettier);
               args = [
                 "--parser"
                 "typescript"

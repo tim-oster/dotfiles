@@ -46,10 +46,57 @@ in
     home.packages = lib.mkMerge [
       [
         pkgs.delve # go debugger
+        pkgs.jujutsu
         pkgs-unstable.bruno
-        pkgs-unstable.gemini-cli
-        #pkgs-unstable.claude-code
-        #pkgs.jetbrains.datagrip
+        pkgs.nixfmt
+        pkgs.nil
+        pkgs.nixd
+
+        (pkgs.writeShellScriptBin "bootstrap-repo" ''
+          #!/usr/bin/env bash
+
+          echo "use flake" > .envrc
+          echo "/.direnv" >> .gitignore
+
+          cat << EOF > flake.nix
+          {
+            inputs = {
+              nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+            };
+
+            outputs =
+              { nixpkgs, ... }:
+              let
+                systems = [
+                  "x86_64-linux"
+                  "aarch64-linux"
+                  "aarch64-darwin"
+                ];
+                forAllSystems = nixpkgs.lib.genAttrs systems;
+              in
+              {
+                devShells = forAllSystems (
+                  system:
+                  let
+                    pkgs = import nixpkgs {
+                      inherit system;
+                      config.allowUnfree = true;
+                    };
+                  in
+                  {
+                    default = pkgs.mkShell {
+                      buildInputs = with pkgs; [
+                        # TODO
+                      ];
+                    };
+                  }
+                );
+              };
+          }
+          EOF
+
+          direnv allow
+        '')
       ]
 
       (lib.mkIf pkgs.stdenv.isLinux [

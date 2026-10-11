@@ -46,6 +46,7 @@ in
         [
           ''
             set fish_greeting # Disable greeting
+            export PATH="$HOME/.local/bin:$PATH"
           ''
         ]
         ++ lib.optional (pkgs.stdenv.isDarwin && cfg.podmanSupport) ''
@@ -86,7 +87,10 @@ in
     };
 
     # TUI file explorer
-    programs.yazi.enable = true;
+    programs.yazi = {
+      enable = true;
+      shellWrapperName = "y";
+    };
 
     programs.starship.enable = true;
 

@@ -105,26 +105,28 @@ in
     };
   };
 
-  homebrew = {
-    enable = true;
-    brews = [ ];
-    casks = [
-      "1password"
-      "1password-cli"
-    ];
-    taps = [ ];
-    masApps = {
-      "Final Cut Pro" = 424389933;
-      "Compressor" = 424390742;
-      "Photomator" = 1444636541;
-      "Xcode" = 497799835;
+  /*
+    homebrew = {
+      enable = true;
+      brews = [ ];
+      casks = [
+        "1password"
+        "1password-cli"
+      ];
+      taps = [ ];
+      masApps = {
+        "Final Cut Pro" = 424389933;
+        "Compressor" = 424390742;
+        "Photomator" = 1444636541;
+        "Xcode" = 497799835;
+      };
+
+      # enforce that no versions are updated automatically
+      global.autoUpdate = false;
+      onActivation.autoUpdate = false;
+      onActivation.upgrade = false;
+
+      onActivation.cleanup = "zap"; # aggressively removes all non-nix-managed formulae
     };
-
-    # enforce that no versions are updated automatically
-    global.autoUpdate = false;
-    onActivation.autoUpdate = false;
-    onActivation.upgrade = false;
-
-    onActivation.cleanup = "zap"; # aggressively removes all non-nix-managed formulae
-  };
+  */
 }
