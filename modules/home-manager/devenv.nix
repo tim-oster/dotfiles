@@ -20,6 +20,7 @@ in
       enable = true;
       silent = true;
       nix-direnv.enable = true;
+      nix-direnv-trusted.enable = true;
     };
 
     programs.delta = {
