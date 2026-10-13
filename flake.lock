@@ -180,26 +180,6 @@
         "type": "github"
       }
     },
-    "nix-direnv-trusted": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1791879087,
-        "narHash": "sha256-um8xf9n3/WLg+m3cKfEwIrkiiJVUnPYRBMliRFL5bqc=",
-        "owner": "tim-oster",
-        "repo": "nix-direnv-trusted",
-        "rev": "950f9fbaef0d7ce065dd81f4a0204c8c0eaa3f07",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tim-oster",
-        "repo": "nix-direnv-trusted",
-        "type": "github"
-      }
-    },
     "nixos-hardware": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -329,7 +309,6 @@
       "inputs": {
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
-        "nix-direnv-trusted": "nix-direnv-trusted",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",

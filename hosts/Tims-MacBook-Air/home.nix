@@ -1,13 +1,10 @@
 {
   pkgs-unstable,
-  inputs,
   outputs,
   ...
 }:
 {
-  imports = builtins.attrValues outputs.homeManagerModules ++ [
-    inputs.nix-direnv-trusted.homeModules.default
-  ];
+  imports = builtins.attrValues outputs.homeManagerModules ++ [ ];
 
   programs.home-manager.enable = true;
 

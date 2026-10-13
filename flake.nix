@@ -27,11 +27,6 @@
     };
 
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
-
-    nix-direnv-trusted = {
-      url = "github:tim-oster/nix-direnv-trusted";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -42,7 +37,6 @@
       nixos-hardware,
       nix-darwin,
       nixvirt,
-      nix-direnv-trusted,
       ...
     }@inputs:
     let
